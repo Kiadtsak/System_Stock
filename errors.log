@@ -1,0 +1,969 @@
+2025-08-18 13:37:11,938 | INFO | === Debug session started ===
+2025-08-18 13:37:11,939 | INFO | === Debug session started ===
+2025-08-18 13:37:11,939 | INFO | 📋 YEARS = [2015, 2016]
+2025-08-18 13:37:11,939 | INFO | 
+===== 🔎 DIAGNOSE YEAR 2015 =====
+2025-08-18 13:37:11,939 | INFO | ▶️ ENTER _call args=["<function Unlevered_Free_Cash_Flow at 0x1011e8d60>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation  ... kwargs={"year": 2015}
+2025-08-18 13:37:11,939 | INFO | ▶️ ENTER Unlevered_Free_Cash_Flow args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 13:37:11,939 | ERROR | ❌ ERROR in Unlevered_Free_Cash_Flow: No module named 'config'
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 142, in Unlevered_Free_Cash_Flow
+    from config import TAX_RATE
+ModuleNotFoundError: No module named 'config'
+
+2025-08-18 13:37:11,939 | ERROR | 🗓️ year=2015
+2025-08-18 13:37:11,939 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 13:37:11,939 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 13:37:11,940 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 13:37:11,940 | INFO | ✅ EXIT  _call -> None
+2025-08-18 13:37:11,940 | INFO | ▶️ ENTER _call args=["<function Free_Cash_Flow at 0x1011e8ea0>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amorti ... kwargs={"year": 2015}
+2025-08-18 13:37:11,940 | INFO | ▶️ ENTER Free_Cash_Flow args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 13:37:11,940 | WARNING | ⚠️ Missing ['Capital Expenditure', 'Capital Expenditures', 'CapEx'] for year=2015 in cashflow_data -> default=None
+2025-08-18 13:37:11,940 | ERROR | ❌ ERROR in Free_Cash_Flow: 'Missing OCF/CapEx for year 2015'
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 168, in Free_Cash_Flow
+    raise KeyError(f"Missing OCF/CapEx for year {year}")
+KeyError: 'Missing OCF/CapEx for year 2015'
+
+2025-08-18 13:37:11,940 | ERROR | 🗓️ year=2015
+2025-08-18 13:37:11,940 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 13:37:11,940 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 13:37:11,940 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 13:37:11,940 | INFO | ✅ EXIT  _call -> None
+2025-08-18 13:37:11,940 | INFO | ▶️ ENTER _call args=["<function WACC at 0x1011e8fe0>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": { ... kwargs={"year": 2015}
+2025-08-18 13:37:11,940 | INFO | ▶️ ENTER WACC args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 13:37:11,940 | WARNING | ⚠️ Missing ['WACC'] for year=2015 in income_data -> default=None
+2025-08-18 13:37:11,940 | WARNING | ⚠️ WACC missing for 2015, fallback=0.12
+2025-08-18 13:37:11,940 | INFO | ✅ EXIT  WACC -> 0.12
+2025-08-18 13:37:11,940 | INFO | ✅ EXIT  _call -> 0.12
+2025-08-18 13:37:11,940 | INFO | ▶️ ENTER _call args=["<function Growth_Rate at 0x1011e9120>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortizat ... kwargs={"year": 2015}
+2025-08-18 13:37:11,940 | INFO | ▶️ ENTER Growth_Rate args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 13:37:11,940 | WARNING | ⚠️ Missing ['EPS'] for year=2014 in income_data -> default=None
+2025-08-18 13:37:11,940 | WARNING | ⚠️ EPS growth missing for 2015, fallback=0.10
+2025-08-18 13:37:11,940 | INFO | ✅ EXIT  Growth_Rate -> 0.1
+2025-08-18 13:37:11,940 | INFO | ✅ EXIT  _call -> 0.1
+2025-08-18 13:37:11,940 | INFO | ▶️ ENTER _call args=["<function DCF_Model at 0x1011e9260>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortizatio ... kwargs={"year": 2015}
+2025-08-18 13:37:11,940 | INFO | ▶️ ENTER DCF_Model args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 13:37:11,940 | INFO | ▶️ ENTER Unlevered_Free_Cash_Flow args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 13:37:11,940 | ERROR | ❌ ERROR in Unlevered_Free_Cash_Flow: No module named 'config'
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 142, in Unlevered_Free_Cash_Flow
+    from config import TAX_RATE
+ModuleNotFoundError: No module named 'config'
+
+2025-08-18 13:37:11,940 | ERROR | 🗓️ year=2015
+2025-08-18 13:37:11,940 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 13:37:11,940 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 13:37:11,940 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 13:37:11,940 | INFO | ▶️ ENTER WACC args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 13:37:11,940 | WARNING | ⚠️ Missing ['WACC'] for year=2015 in income_data -> default=None
+2025-08-18 13:37:11,940 | WARNING | ⚠️ WACC missing for 2015, fallback=0.12
+2025-08-18 13:37:11,940 | INFO | ✅ EXIT  WACC -> 0.12
+2025-08-18 13:37:11,940 | INFO | ▶️ ENTER Growth_Rate args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 13:37:11,940 | WARNING | ⚠️ Missing ['EPS'] for year=2014 in income_data -> default=None
+2025-08-18 13:37:11,940 | WARNING | ⚠️ EPS growth missing for 2015, fallback=0.10
+2025-08-18 13:37:11,941 | INFO | ✅ EXIT  Growth_Rate -> 0.1
+2025-08-18 13:37:11,941 | ERROR | ❌ ERROR in DCF_Model: Missing UFCF/WACC/Growth
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 196, in DCF_Model
+    raise ValueError("Missing UFCF/WACC/Growth")
+ValueError: Missing UFCF/WACC/Growth
+
+2025-08-18 13:37:11,941 | ERROR | 🗓️ year=2015
+2025-08-18 13:37:11,941 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 13:37:11,941 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 13:37:11,941 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 13:37:11,941 | INFO | ✅ EXIT  _call -> None
+2025-08-18 13:37:11,941 | INFO | 
+===== 🔎 DIAGNOSE YEAR 2016 =====
+2025-08-18 13:37:11,941 | INFO | ▶️ ENTER _call args=["<function Unlevered_Free_Cash_Flow at 0x1011e8d60>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation  ... kwargs={"year": 2016}
+2025-08-18 13:37:11,941 | INFO | ▶️ ENTER Unlevered_Free_Cash_Flow args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 13:37:11,941 | ERROR | ❌ ERROR in Unlevered_Free_Cash_Flow: No module named 'config'
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 142, in Unlevered_Free_Cash_Flow
+    from config import TAX_RATE
+ModuleNotFoundError: No module named 'config'
+
+2025-08-18 13:37:11,941 | ERROR | 🗓️ year=2016
+2025-08-18 13:37:11,941 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 13:37:11,941 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 13:37:11,941 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 13:37:11,941 | INFO | ✅ EXIT  _call -> None
+2025-08-18 13:37:11,941 | INFO | ▶️ ENTER _call args=["<function Free_Cash_Flow at 0x1011e8ea0>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amorti ... kwargs={"year": 2016}
+2025-08-18 13:37:11,941 | INFO | ▶️ ENTER Free_Cash_Flow args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 13:37:11,941 | INFO | ✅ EXIT  Free_Cash_Flow -> 780
+2025-08-18 13:37:11,941 | INFO | ✅ EXIT  _call -> 780
+2025-08-18 13:37:11,941 | INFO | ▶️ ENTER _call args=["<function WACC at 0x1011e8fe0>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": { ... kwargs={"year": 2016}
+2025-08-18 13:37:11,941 | INFO | ▶️ ENTER WACC args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 13:37:11,941 | WARNING | ⚠️ Missing ['WACC'] for year=2016 in income_data -> default=None
+2025-08-18 13:37:11,941 | WARNING | ⚠️ WACC missing for 2016, fallback=0.12
+2025-08-18 13:37:11,941 | INFO | ✅ EXIT  WACC -> 0.12
+2025-08-18 13:37:11,941 | INFO | ✅ EXIT  _call -> 0.12
+2025-08-18 13:37:11,941 | INFO | ▶️ ENTER _call args=["<function Growth_Rate at 0x1011e9120>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortizat ... kwargs={"year": 2016}
+2025-08-18 13:37:11,941 | INFO | ▶️ ENTER Growth_Rate args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 13:37:11,941 | INFO | ✅ EXIT  Growth_Rate -> 0.30000000000000004
+2025-08-18 13:37:11,941 | INFO | ✅ EXIT  _call -> 0.30000000000000004
+2025-08-18 13:37:11,941 | INFO | ▶️ ENTER _call args=["<function DCF_Model at 0x1011e9260>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortizatio ... kwargs={"year": 2016}
+2025-08-18 13:37:11,941 | INFO | ▶️ ENTER DCF_Model args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 13:37:11,941 | INFO | ▶️ ENTER Unlevered_Free_Cash_Flow args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 13:37:11,941 | ERROR | ❌ ERROR in Unlevered_Free_Cash_Flow: No module named 'config'
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 142, in Unlevered_Free_Cash_Flow
+    from config import TAX_RATE
+ModuleNotFoundError: No module named 'config'
+
+2025-08-18 13:37:11,941 | ERROR | 🗓️ year=2016
+2025-08-18 13:37:11,941 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 13:37:11,941 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 13:37:11,941 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 13:37:11,941 | INFO | ▶️ ENTER WACC args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 13:37:11,941 | WARNING | ⚠️ Missing ['WACC'] for year=2016 in income_data -> default=None
+2025-08-18 13:37:11,941 | WARNING | ⚠️ WACC missing for 2016, fallback=0.12
+2025-08-18 13:37:11,941 | INFO | ✅ EXIT  WACC -> 0.12
+2025-08-18 13:37:11,941 | INFO | ▶️ ENTER Growth_Rate args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 13:37:11,942 | INFO | ✅ EXIT  Growth_Rate -> 0.30000000000000004
+2025-08-18 13:37:11,942 | ERROR | ❌ ERROR in DCF_Model: Missing UFCF/WACC/Growth
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 196, in DCF_Model
+    raise ValueError("Missing UFCF/WACC/Growth")
+ValueError: Missing UFCF/WACC/Growth
+
+2025-08-18 13:37:11,942 | ERROR | 🗓️ year=2016
+2025-08-18 13:37:11,942 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 13:37:11,942 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 13:37:11,942 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 13:37:11,942 | INFO | ✅ EXIT  _call -> None
+2025-08-18 13:37:11,942 | INFO | ✅ Diagnostic CSV saved -> diagnostic_report.csv
+2025-08-18 14:24:42,186 | INFO | === Debug session started ===
+2025-08-18 14:24:42,187 | INFO | === Debug session started ===
+2025-08-18 14:24:42,187 | INFO | 📋 YEARS = [2015, 2016]
+2025-08-18 14:24:42,187 | INFO | 
+===== 🔎 DIAGNOSE YEAR 2015 =====
+2025-08-18 14:24:42,187 | INFO | ▶️ ENTER _call args=["<function Unlevered_Free_Cash_Flow at 0x1029b8d60>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation  ... kwargs={"year": 2015}
+2025-08-18 14:24:42,187 | INFO | ▶️ ENTER Unlevered_Free_Cash_Flow args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 14:24:42,188 | ERROR | ❌ ERROR in Unlevered_Free_Cash_Flow: No module named 'config'
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 142, in Unlevered_Free_Cash_Flow
+    from config import TAX_RATE
+ModuleNotFoundError: No module named 'config'
+
+2025-08-18 14:24:42,188 | ERROR | 🗓️ year=2015
+2025-08-18 14:24:42,188 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 14:24:42,188 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 14:24:42,188 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 14:24:42,188 | INFO | ✅ EXIT  _call -> None
+2025-08-18 14:24:42,188 | INFO | ▶️ ENTER _call args=["<function Free_Cash_Flow at 0x1029b8ea0>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amorti ... kwargs={"year": 2015}
+2025-08-18 14:24:42,188 | INFO | ▶️ ENTER Free_Cash_Flow args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 14:24:42,188 | WARNING | ⚠️ Missing ['Capital Expenditure', 'Capital Expenditures', 'CapEx'] for year=2015 in cashflow_data -> default=None
+2025-08-18 14:24:42,188 | ERROR | ❌ ERROR in Free_Cash_Flow: 'Missing OCF/CapEx for year 2015'
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 168, in Free_Cash_Flow
+    raise KeyError(f"Missing OCF/CapEx for year {year}")
+KeyError: 'Missing OCF/CapEx for year 2015'
+
+2025-08-18 14:24:42,188 | ERROR | 🗓️ year=2015
+2025-08-18 14:24:42,188 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 14:24:42,188 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 14:24:42,188 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 14:24:42,188 | INFO | ✅ EXIT  _call -> None
+2025-08-18 14:24:42,188 | INFO | ▶️ ENTER _call args=["<function WACC at 0x1029b8fe0>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": { ... kwargs={"year": 2015}
+2025-08-18 14:24:42,188 | INFO | ▶️ ENTER WACC args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 14:24:42,188 | WARNING | ⚠️ Missing ['WACC'] for year=2015 in income_data -> default=None
+2025-08-18 14:24:42,188 | WARNING | ⚠️ WACC missing for 2015, fallback=0.12
+2025-08-18 14:24:42,188 | INFO | ✅ EXIT  WACC -> 0.12
+2025-08-18 14:24:42,188 | INFO | ✅ EXIT  _call -> 0.12
+2025-08-18 14:24:42,188 | INFO | ▶️ ENTER _call args=["<function Growth_Rate at 0x1029b9120>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortizat ... kwargs={"year": 2015}
+2025-08-18 14:24:42,188 | INFO | ▶️ ENTER Growth_Rate args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 14:24:42,188 | WARNING | ⚠️ Missing ['EPS'] for year=2014 in income_data -> default=None
+2025-08-18 14:24:42,188 | WARNING | ⚠️ EPS growth missing for 2015, fallback=0.10
+2025-08-18 14:24:42,188 | INFO | ✅ EXIT  Growth_Rate -> 0.1
+2025-08-18 14:24:42,188 | INFO | ✅ EXIT  _call -> 0.1
+2025-08-18 14:24:42,188 | INFO | ▶️ ENTER _call args=["<function DCF_Model at 0x1029b9260>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortizatio ... kwargs={"year": 2015}
+2025-08-18 14:24:42,188 | INFO | ▶️ ENTER DCF_Model args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 14:24:42,188 | INFO | ▶️ ENTER Unlevered_Free_Cash_Flow args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 14:24:42,189 | ERROR | ❌ ERROR in Unlevered_Free_Cash_Flow: No module named 'config'
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 142, in Unlevered_Free_Cash_Flow
+    from config import TAX_RATE
+ModuleNotFoundError: No module named 'config'
+
+2025-08-18 14:24:42,189 | ERROR | 🗓️ year=2015
+2025-08-18 14:24:42,189 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 14:24:42,189 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 14:24:42,189 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 14:24:42,189 | INFO | ▶️ ENTER WACC args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 14:24:42,189 | WARNING | ⚠️ Missing ['WACC'] for year=2015 in income_data -> default=None
+2025-08-18 14:24:42,189 | WARNING | ⚠️ WACC missing for 2015, fallback=0.12
+2025-08-18 14:24:42,189 | INFO | ✅ EXIT  WACC -> 0.12
+2025-08-18 14:24:42,189 | INFO | ▶️ ENTER Growth_Rate args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 14:24:42,189 | WARNING | ⚠️ Missing ['EPS'] for year=2014 in income_data -> default=None
+2025-08-18 14:24:42,189 | WARNING | ⚠️ EPS growth missing for 2015, fallback=0.10
+2025-08-18 14:24:42,189 | INFO | ✅ EXIT  Growth_Rate -> 0.1
+2025-08-18 14:24:42,189 | ERROR | ❌ ERROR in DCF_Model: Missing UFCF/WACC/Growth
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 196, in DCF_Model
+    raise ValueError("Missing UFCF/WACC/Growth")
+ValueError: Missing UFCF/WACC/Growth
+
+2025-08-18 14:24:42,189 | ERROR | 🗓️ year=2015
+2025-08-18 14:24:42,189 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 14:24:42,189 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 14:24:42,189 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 14:24:42,189 | INFO | ✅ EXIT  _call -> None
+2025-08-18 14:24:42,189 | INFO | 
+===== 🔎 DIAGNOSE YEAR 2016 =====
+2025-08-18 14:24:42,189 | INFO | ▶️ ENTER _call args=["<function Unlevered_Free_Cash_Flow at 0x1029b8d60>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation  ... kwargs={"year": 2016}
+2025-08-18 14:24:42,189 | INFO | ▶️ ENTER Unlevered_Free_Cash_Flow args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 14:24:42,189 | ERROR | ❌ ERROR in Unlevered_Free_Cash_Flow: No module named 'config'
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 142, in Unlevered_Free_Cash_Flow
+    from config import TAX_RATE
+ModuleNotFoundError: No module named 'config'
+
+2025-08-18 14:24:42,189 | ERROR | 🗓️ year=2016
+2025-08-18 14:24:42,189 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 14:24:42,189 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 14:24:42,189 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 14:24:42,189 | INFO | ✅ EXIT  _call -> None
+2025-08-18 14:24:42,189 | INFO | ▶️ ENTER _call args=["<function Free_Cash_Flow at 0x1029b8ea0>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amorti ... kwargs={"year": 2016}
+2025-08-18 14:24:42,189 | INFO | ▶️ ENTER Free_Cash_Flow args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 14:24:42,189 | INFO | ✅ EXIT  Free_Cash_Flow -> 780
+2025-08-18 14:24:42,189 | INFO | ✅ EXIT  _call -> 780
+2025-08-18 14:24:42,189 | INFO | ▶️ ENTER _call args=["<function WACC at 0x1029b8fe0>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": { ... kwargs={"year": 2016}
+2025-08-18 14:24:42,189 | INFO | ▶️ ENTER WACC args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 14:24:42,189 | WARNING | ⚠️ Missing ['WACC'] for year=2016 in income_data -> default=None
+2025-08-18 14:24:42,189 | WARNING | ⚠️ WACC missing for 2016, fallback=0.12
+2025-08-18 14:24:42,189 | INFO | ✅ EXIT  WACC -> 0.12
+2025-08-18 14:24:42,189 | INFO | ✅ EXIT  _call -> 0.12
+2025-08-18 14:24:42,189 | INFO | ▶️ ENTER _call args=["<function Growth_Rate at 0x1029b9120>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortizat ... kwargs={"year": 2016}
+2025-08-18 14:24:42,189 | INFO | ▶️ ENTER Growth_Rate args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 14:24:42,189 | INFO | ✅ EXIT  Growth_Rate -> 0.30000000000000004
+2025-08-18 14:24:42,189 | INFO | ✅ EXIT  _call -> 0.30000000000000004
+2025-08-18 14:24:42,189 | INFO | ▶️ ENTER _call args=["<function DCF_Model at 0x1029b9260>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortizatio ... kwargs={"year": 2016}
+2025-08-18 14:24:42,189 | INFO | ▶️ ENTER DCF_Model args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 14:24:42,189 | INFO | ▶️ ENTER Unlevered_Free_Cash_Flow args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 14:24:42,190 | ERROR | ❌ ERROR in Unlevered_Free_Cash_Flow: No module named 'config'
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 142, in Unlevered_Free_Cash_Flow
+    from config import TAX_RATE
+ModuleNotFoundError: No module named 'config'
+
+2025-08-18 14:24:42,190 | ERROR | 🗓️ year=2016
+2025-08-18 14:24:42,190 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 14:24:42,190 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 14:24:42,190 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 14:24:42,190 | INFO | ▶️ ENTER WACC args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 14:24:42,190 | WARNING | ⚠️ Missing ['WACC'] for year=2016 in income_data -> default=None
+2025-08-18 14:24:42,190 | WARNING | ⚠️ WACC missing for 2016, fallback=0.12
+2025-08-18 14:24:42,190 | INFO | ✅ EXIT  WACC -> 0.12
+2025-08-18 14:24:42,190 | INFO | ▶️ ENTER Growth_Rate args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 14:24:42,190 | INFO | ✅ EXIT  Growth_Rate -> 0.30000000000000004
+2025-08-18 14:24:42,190 | ERROR | ❌ ERROR in DCF_Model: Missing UFCF/WACC/Growth
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 196, in DCF_Model
+    raise ValueError("Missing UFCF/WACC/Growth")
+ValueError: Missing UFCF/WACC/Growth
+
+2025-08-18 14:24:42,190 | ERROR | 🗓️ year=2016
+2025-08-18 14:24:42,190 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 14:24:42,190 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 14:24:42,190 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 14:24:42,190 | INFO | ✅ EXIT  _call -> None
+2025-08-18 14:24:42,190 | INFO | ✅ Diagnostic CSV saved -> diagnostic_report.csv
+2025-08-18 14:26:04,956 | INFO | === Debug session started ===
+2025-08-18 14:26:04,957 | INFO | === Debug session started ===
+2025-08-18 14:26:04,957 | INFO | 📋 YEARS = [2015, 2016]
+2025-08-18 14:26:04,957 | INFO | 
+===== 🔎 DIAGNOSE YEAR 2015 =====
+2025-08-18 14:26:04,957 | INFO | ▶️ ENTER _call args=["<function Unlevered_Free_Cash_Flow at 0x100b54d60>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation  ... kwargs={"year": 2015}
+2025-08-18 14:26:04,957 | INFO | ▶️ ENTER Unlevered_Free_Cash_Flow args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 14:26:04,957 | ERROR | ❌ ERROR in Unlevered_Free_Cash_Flow: No module named 'config'
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 142, in Unlevered_Free_Cash_Flow
+    from config import TAX_RATE
+ModuleNotFoundError: No module named 'config'
+
+2025-08-18 14:26:04,957 | ERROR | 🗓️ year=2015
+2025-08-18 14:26:04,957 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 14:26:04,957 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 14:26:04,957 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 14:26:04,957 | INFO | ✅ EXIT  _call -> None
+2025-08-18 14:26:04,957 | INFO | ▶️ ENTER _call args=["<function Free_Cash_Flow at 0x100b54ea0>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amorti ... kwargs={"year": 2015}
+2025-08-18 14:26:04,957 | INFO | ▶️ ENTER Free_Cash_Flow args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 14:26:04,957 | WARNING | ⚠️ Missing ['Capital Expenditure', 'Capital Expenditures', 'CapEx'] for year=2015 in cashflow_data -> default=None
+2025-08-18 14:26:04,957 | ERROR | ❌ ERROR in Free_Cash_Flow: 'Missing OCF/CapEx for year 2015'
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 168, in Free_Cash_Flow
+    raise KeyError(f"Missing OCF/CapEx for year {year}")
+KeyError: 'Missing OCF/CapEx for year 2015'
+
+2025-08-18 14:26:04,958 | ERROR | 🗓️ year=2015
+2025-08-18 14:26:04,958 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 14:26:04,958 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 14:26:04,958 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 14:26:04,958 | INFO | ✅ EXIT  _call -> None
+2025-08-18 14:26:04,958 | INFO | ▶️ ENTER _call args=["<function WACC at 0x100b54fe0>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": { ... kwargs={"year": 2015}
+2025-08-18 14:26:04,958 | INFO | ▶️ ENTER WACC args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 14:26:04,958 | WARNING | ⚠️ Missing ['WACC'] for year=2015 in income_data -> default=None
+2025-08-18 14:26:04,958 | WARNING | ⚠️ WACC missing for 2015, fallback=0.12
+2025-08-18 14:26:04,958 | INFO | ✅ EXIT  WACC -> 0.12
+2025-08-18 14:26:04,958 | INFO | ✅ EXIT  _call -> 0.12
+2025-08-18 14:26:04,958 | INFO | ▶️ ENTER _call args=["<function Growth_Rate at 0x100b55120>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortizat ... kwargs={"year": 2015}
+2025-08-18 14:26:04,958 | INFO | ▶️ ENTER Growth_Rate args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 14:26:04,958 | WARNING | ⚠️ Missing ['EPS'] for year=2014 in income_data -> default=None
+2025-08-18 14:26:04,958 | WARNING | ⚠️ EPS growth missing for 2015, fallback=0.10
+2025-08-18 14:26:04,958 | INFO | ✅ EXIT  Growth_Rate -> 0.1
+2025-08-18 14:26:04,958 | INFO | ✅ EXIT  _call -> 0.1
+2025-08-18 14:26:04,958 | INFO | ▶️ ENTER _call args=["<function DCF_Model at 0x100b55260>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortizatio ... kwargs={"year": 2015}
+2025-08-18 14:26:04,958 | INFO | ▶️ ENTER DCF_Model args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 14:26:04,958 | INFO | ▶️ ENTER Unlevered_Free_Cash_Flow args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 14:26:04,958 | ERROR | ❌ ERROR in Unlevered_Free_Cash_Flow: No module named 'config'
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 142, in Unlevered_Free_Cash_Flow
+    from config import TAX_RATE
+ModuleNotFoundError: No module named 'config'
+
+2025-08-18 14:26:04,958 | ERROR | 🗓️ year=2015
+2025-08-18 14:26:04,958 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 14:26:04,958 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 14:26:04,958 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 14:26:04,958 | INFO | ▶️ ENTER WACC args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 14:26:04,958 | WARNING | ⚠️ Missing ['WACC'] for year=2015 in income_data -> default=None
+2025-08-18 14:26:04,958 | WARNING | ⚠️ WACC missing for 2015, fallback=0.12
+2025-08-18 14:26:04,958 | INFO | ✅ EXIT  WACC -> 0.12
+2025-08-18 14:26:04,958 | INFO | ▶️ ENTER Growth_Rate args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 14:26:04,958 | WARNING | ⚠️ Missing ['EPS'] for year=2014 in income_data -> default=None
+2025-08-18 14:26:04,958 | WARNING | ⚠️ EPS growth missing for 2015, fallback=0.10
+2025-08-18 14:26:04,958 | INFO | ✅ EXIT  Growth_Rate -> 0.1
+2025-08-18 14:26:04,958 | ERROR | ❌ ERROR in DCF_Model: Missing UFCF/WACC/Growth
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 196, in DCF_Model
+    raise ValueError("Missing UFCF/WACC/Growth")
+ValueError: Missing UFCF/WACC/Growth
+
+2025-08-18 14:26:04,959 | ERROR | 🗓️ year=2015
+2025-08-18 14:26:04,959 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 14:26:04,959 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 14:26:04,959 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 14:26:04,959 | INFO | ✅ EXIT  _call -> None
+2025-08-18 14:26:04,959 | INFO | 
+===== 🔎 DIAGNOSE YEAR 2016 =====
+2025-08-18 14:26:04,959 | INFO | ▶️ ENTER _call args=["<function Unlevered_Free_Cash_Flow at 0x100b54d60>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation  ... kwargs={"year": 2016}
+2025-08-18 14:26:04,959 | INFO | ▶️ ENTER Unlevered_Free_Cash_Flow args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 14:26:04,959 | ERROR | ❌ ERROR in Unlevered_Free_Cash_Flow: No module named 'config'
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 142, in Unlevered_Free_Cash_Flow
+    from config import TAX_RATE
+ModuleNotFoundError: No module named 'config'
+
+2025-08-18 14:26:04,959 | ERROR | 🗓️ year=2016
+2025-08-18 14:26:04,959 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 14:26:04,959 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 14:26:04,959 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 14:26:04,959 | INFO | ✅ EXIT  _call -> None
+2025-08-18 14:26:04,959 | INFO | ▶️ ENTER _call args=["<function Free_Cash_Flow at 0x100b54ea0>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amorti ... kwargs={"year": 2016}
+2025-08-18 14:26:04,959 | INFO | ▶️ ENTER Free_Cash_Flow args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 14:26:04,959 | INFO | ✅ EXIT  Free_Cash_Flow -> 780
+2025-08-18 14:26:04,959 | INFO | ✅ EXIT  _call -> 780
+2025-08-18 14:26:04,959 | INFO | ▶️ ENTER _call args=["<function WACC at 0x100b54fe0>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": { ... kwargs={"year": 2016}
+2025-08-18 14:26:04,959 | INFO | ▶️ ENTER WACC args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 14:26:04,959 | WARNING | ⚠️ Missing ['WACC'] for year=2016 in income_data -> default=None
+2025-08-18 14:26:04,959 | WARNING | ⚠️ WACC missing for 2016, fallback=0.12
+2025-08-18 14:26:04,959 | INFO | ✅ EXIT  WACC -> 0.12
+2025-08-18 14:26:04,959 | INFO | ✅ EXIT  _call -> 0.12
+2025-08-18 14:26:04,959 | INFO | ▶️ ENTER _call args=["<function Growth_Rate at 0x100b55120>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortizat ... kwargs={"year": 2016}
+2025-08-18 14:26:04,959 | INFO | ▶️ ENTER Growth_Rate args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 14:26:04,959 | INFO | ✅ EXIT  Growth_Rate -> 0.30000000000000004
+2025-08-18 14:26:04,959 | INFO | ✅ EXIT  _call -> 0.30000000000000004
+2025-08-18 14:26:04,959 | INFO | ▶️ ENTER _call args=["<function DCF_Model at 0x100b55260>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortizatio ... kwargs={"year": 2016}
+2025-08-18 14:26:04,959 | INFO | ▶️ ENTER DCF_Model args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 14:26:04,959 | INFO | ▶️ ENTER Unlevered_Free_Cash_Flow args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 14:26:04,959 | ERROR | ❌ ERROR in Unlevered_Free_Cash_Flow: No module named 'config'
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 142, in Unlevered_Free_Cash_Flow
+    from config import TAX_RATE
+ModuleNotFoundError: No module named 'config'
+
+2025-08-18 14:26:04,959 | ERROR | 🗓️ year=2016
+2025-08-18 14:26:04,959 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 14:26:04,959 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 14:26:04,959 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 14:26:04,960 | INFO | ▶️ ENTER WACC args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 14:26:04,960 | WARNING | ⚠️ Missing ['WACC'] for year=2016 in income_data -> default=None
+2025-08-18 14:26:04,960 | WARNING | ⚠️ WACC missing for 2016, fallback=0.12
+2025-08-18 14:26:04,960 | INFO | ✅ EXIT  WACC -> 0.12
+2025-08-18 14:26:04,960 | INFO | ▶️ ENTER Growth_Rate args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 14:26:04,960 | INFO | ✅ EXIT  Growth_Rate -> 0.30000000000000004
+2025-08-18 14:26:04,960 | ERROR | ❌ ERROR in DCF_Model: Missing UFCF/WACC/Growth
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 196, in DCF_Model
+    raise ValueError("Missing UFCF/WACC/Growth")
+ValueError: Missing UFCF/WACC/Growth
+
+2025-08-18 14:26:04,960 | ERROR | 🗓️ year=2016
+2025-08-18 14:26:04,960 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 14:26:04,960 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 14:26:04,960 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 14:26:04,960 | INFO | ✅ EXIT  _call -> None
+2025-08-18 14:26:04,960 | INFO | ✅ Diagnostic CSV saved -> diagnostic_report.csv
+2025-08-18 15:16:39,944 | INFO | === Debug session started ===
+2025-08-18 15:16:39,945 | INFO | === Debug session started ===
+2025-08-18 15:16:39,945 | INFO | 📋 YEARS = [2015, 2016]
+2025-08-18 15:16:39,945 | INFO | 
+===== 🔎 DIAGNOSE YEAR 2015 =====
+2025-08-18 15:16:39,945 | INFO | ▶️ ENTER _call args=["<function Unlevered_Free_Cash_Flow at 0x102a8cd60>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation  ... kwargs={"year": 2015}
+2025-08-18 15:16:39,945 | INFO | ▶️ ENTER Unlevered_Free_Cash_Flow args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 15:16:39,946 | ERROR | ❌ ERROR in Unlevered_Free_Cash_Flow: No module named 'config'
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 142, in Unlevered_Free_Cash_Flow
+    from config import TAX_RATE
+ModuleNotFoundError: No module named 'config'
+
+2025-08-18 15:16:39,946 | ERROR | 🗓️ year=2015
+2025-08-18 15:16:39,946 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 15:16:39,946 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 15:16:39,946 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 15:16:39,946 | INFO | ✅ EXIT  _call -> None
+2025-08-18 15:16:39,946 | INFO | ▶️ ENTER _call args=["<function Free_Cash_Flow at 0x102a8cea0>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amorti ... kwargs={"year": 2015}
+2025-08-18 15:16:39,946 | INFO | ▶️ ENTER Free_Cash_Flow args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 15:16:39,946 | WARNING | ⚠️ Missing ['Capital Expenditure', 'Capital Expenditures', 'CapEx'] for year=2015 in cashflow_data -> default=None
+2025-08-18 15:16:39,946 | ERROR | ❌ ERROR in Free_Cash_Flow: 'Missing OCF/CapEx for year 2015'
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 168, in Free_Cash_Flow
+    raise KeyError(f"Missing OCF/CapEx for year {year}")
+KeyError: 'Missing OCF/CapEx for year 2015'
+
+2025-08-18 15:16:39,946 | ERROR | 🗓️ year=2015
+2025-08-18 15:16:39,946 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 15:16:39,946 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 15:16:39,946 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 15:16:39,946 | INFO | ✅ EXIT  _call -> None
+2025-08-18 15:16:39,946 | INFO | ▶️ ENTER _call args=["<function WACC at 0x102a8cfe0>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": { ... kwargs={"year": 2015}
+2025-08-18 15:16:39,946 | INFO | ▶️ ENTER WACC args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 15:16:39,946 | WARNING | ⚠️ Missing ['WACC'] for year=2015 in income_data -> default=None
+2025-08-18 15:16:39,946 | WARNING | ⚠️ WACC missing for 2015, fallback=0.12
+2025-08-18 15:16:39,946 | INFO | ✅ EXIT  WACC -> 0.12
+2025-08-18 15:16:39,946 | INFO | ✅ EXIT  _call -> 0.12
+2025-08-18 15:16:39,946 | INFO | ▶️ ENTER _call args=["<function Growth_Rate at 0x102a8d120>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortizat ... kwargs={"year": 2015}
+2025-08-18 15:16:39,946 | INFO | ▶️ ENTER Growth_Rate args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 15:16:39,946 | WARNING | ⚠️ Missing ['EPS'] for year=2014 in income_data -> default=None
+2025-08-18 15:16:39,946 | WARNING | ⚠️ EPS growth missing for 2015, fallback=0.10
+2025-08-18 15:16:39,946 | INFO | ✅ EXIT  Growth_Rate -> 0.1
+2025-08-18 15:16:39,946 | INFO | ✅ EXIT  _call -> 0.1
+2025-08-18 15:16:39,946 | INFO | ▶️ ENTER _call args=["<function DCF_Model at 0x102a8d260>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortizatio ... kwargs={"year": 2015}
+2025-08-18 15:16:39,946 | INFO | ▶️ ENTER DCF_Model args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 15:16:39,946 | INFO | ▶️ ENTER Unlevered_Free_Cash_Flow args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 15:16:39,947 | ERROR | ❌ ERROR in Unlevered_Free_Cash_Flow: No module named 'config'
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 142, in Unlevered_Free_Cash_Flow
+    from config import TAX_RATE
+ModuleNotFoundError: No module named 'config'
+
+2025-08-18 15:16:39,947 | ERROR | 🗓️ year=2015
+2025-08-18 15:16:39,947 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 15:16:39,947 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 15:16:39,947 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 15:16:39,947 | INFO | ▶️ ENTER WACC args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 15:16:39,947 | WARNING | ⚠️ Missing ['WACC'] for year=2015 in income_data -> default=None
+2025-08-18 15:16:39,947 | WARNING | ⚠️ WACC missing for 2015, fallback=0.12
+2025-08-18 15:16:39,947 | INFO | ✅ EXIT  WACC -> 0.12
+2025-08-18 15:16:39,947 | INFO | ▶️ ENTER Growth_Rate args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2015}
+2025-08-18 15:16:39,947 | WARNING | ⚠️ Missing ['EPS'] for year=2014 in income_data -> default=None
+2025-08-18 15:16:39,947 | WARNING | ⚠️ EPS growth missing for 2015, fallback=0.10
+2025-08-18 15:16:39,947 | INFO | ✅ EXIT  Growth_Rate -> 0.1
+2025-08-18 15:16:39,947 | ERROR | ❌ ERROR in DCF_Model: Missing UFCF/WACC/Growth
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 196, in DCF_Model
+    raise ValueError("Missing UFCF/WACC/Growth")
+ValueError: Missing UFCF/WACC/Growth
+
+2025-08-18 15:16:39,947 | ERROR | 🗓️ year=2015
+2025-08-18 15:16:39,947 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 15:16:39,947 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 15:16:39,947 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 15:16:39,947 | INFO | ✅ EXIT  _call -> None
+2025-08-18 15:16:39,947 | INFO | 
+===== 🔎 DIAGNOSE YEAR 2016 =====
+2025-08-18 15:16:39,947 | INFO | ▶️ ENTER _call args=["<function Unlevered_Free_Cash_Flow at 0x102a8cd60>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation  ... kwargs={"year": 2016}
+2025-08-18 15:16:39,947 | INFO | ▶️ ENTER Unlevered_Free_Cash_Flow args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 15:16:39,947 | ERROR | ❌ ERROR in Unlevered_Free_Cash_Flow: No module named 'config'
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 142, in Unlevered_Free_Cash_Flow
+    from config import TAX_RATE
+ModuleNotFoundError: No module named 'config'
+
+2025-08-18 15:16:39,947 | ERROR | 🗓️ year=2016
+2025-08-18 15:16:39,947 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 15:16:39,947 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 15:16:39,947 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 15:16:39,947 | INFO | ✅ EXIT  _call -> None
+2025-08-18 15:16:39,947 | INFO | ▶️ ENTER _call args=["<function Free_Cash_Flow at 0x102a8cea0>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amorti ... kwargs={"year": 2016}
+2025-08-18 15:16:39,947 | INFO | ▶️ ENTER Free_Cash_Flow args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 15:16:39,947 | INFO | ✅ EXIT  Free_Cash_Flow -> 780
+2025-08-18 15:16:39,947 | INFO | ✅ EXIT  _call -> 780
+2025-08-18 15:16:39,947 | INFO | ▶️ ENTER _call args=["<function WACC at 0x102a8cfe0>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": { ... kwargs={"year": 2016}
+2025-08-18 15:16:39,947 | INFO | ▶️ ENTER WACC args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 15:16:39,947 | WARNING | ⚠️ Missing ['WACC'] for year=2016 in income_data -> default=None
+2025-08-18 15:16:39,947 | WARNING | ⚠️ WACC missing for 2016, fallback=0.12
+2025-08-18 15:16:39,947 | INFO | ✅ EXIT  WACC -> 0.12
+2025-08-18 15:16:39,947 | INFO | ✅ EXIT  _call -> 0.12
+2025-08-18 15:16:39,947 | INFO | ▶️ ENTER _call args=["<function Growth_Rate at 0x102a8d120>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortizat ... kwargs={"year": 2016}
+2025-08-18 15:16:39,947 | INFO | ▶️ ENTER Growth_Rate args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 15:16:39,947 | INFO | ✅ EXIT  Growth_Rate -> 0.30000000000000004
+2025-08-18 15:16:39,947 | INFO | ✅ EXIT  _call -> 0.30000000000000004
+2025-08-18 15:16:39,947 | INFO | ▶️ ENTER _call args=["<function DCF_Model at 0x102a8d260>", {"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortizatio ... kwargs={"year": 2016}
+2025-08-18 15:16:39,947 | INFO | ▶️ ENTER DCF_Model args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 15:16:39,947 | INFO | ▶️ ENTER Unlevered_Free_Cash_Flow args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 15:16:39,948 | ERROR | ❌ ERROR in Unlevered_Free_Cash_Flow: No module named 'config'
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 142, in Unlevered_Free_Cash_Flow
+    from config import TAX_RATE
+ModuleNotFoundError: No module named 'config'
+
+2025-08-18 15:16:39,948 | ERROR | 🗓️ year=2016
+2025-08-18 15:16:39,948 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 15:16:39,948 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 15:16:39,948 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 15:16:39,948 | INFO | ▶️ ENTER WACC args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 15:16:39,948 | WARNING | ⚠️ Missing ['WACC'] for year=2016 in income_data -> default=None
+2025-08-18 15:16:39,948 | WARNING | ⚠️ WACC missing for 2016, fallback=0.12
+2025-08-18 15:16:39,948 | INFO | ✅ EXIT  WACC -> 0.12
+2025-08-18 15:16:39,948 | INFO | ▶️ ENTER Growth_Rate args=[{"Operating Income": {"2015": 1000, "2016": 1200}, "Depreciation and Amortization": {"2015": 100, "2016": 120}, "EPS":  ... kwargs={"year": 2016}
+2025-08-18 15:16:39,948 | INFO | ✅ EXIT  Growth_Rate -> 0.30000000000000004
+2025-08-18 15:16:39,948 | ERROR | ❌ ERROR in DCF_Model: Missing UFCF/WACC/Growth
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 25, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/processing/debug_tools.py", line 196, in DCF_Model
+    raise ValueError("Missing UFCF/WACC/Growth")
+ValueError: Missing UFCF/WACC/Growth
+
+2025-08-18 15:16:39,948 | ERROR | 🗓️ year=2016
+2025-08-18 15:16:39,948 | ERROR | 🔑 keys(income_data) -> ['Operating Income', 'Depreciation and Amortization', 'EPS']
+2025-08-18 15:16:39,948 | ERROR | 🔑 keys(cashflow_data) -> ['Operating Cash Flow (OCF)', 'CapEx', 'Change in Working Capital']
+2025-08-18 15:16:39,948 | ERROR | 🔑 keys(balance_data) -> ['Total Equity']
+2025-08-18 15:16:39,948 | INFO | ✅ EXIT  _call -> None
+2025-08-18 15:16:39,948 | INFO | ✅ Diagnostic CSV saved -> diagnostic_report.csv
+2025-08-20 20:41:13,665 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-20 20:41:35,030 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-20 20:59:33,779 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-20 21:03:26,028 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-21 12:16:30,665 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-21 12:36:56,277 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-21 12:37:53,907 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-21 12:39:22,012 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-21 13:21:02,527 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-21 13:22:07,646 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-21 13:24:35,291 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-21 13:26:36,610 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-21 13:27:32,366 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-21 13:54:01,561 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-21 13:54:57,764 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-21 14:01:28,017 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-21 14:11:39,479 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-21 14:21:06,066 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-21 14:23:11,892 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-21 19:32:44,060 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-21 19:33:58,666 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-21 20:01:48,461 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-21 20:29:45,306 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-21 20:30:41,139 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-21 20:32:35,139 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-21 20:32:50,128 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-21 20:33:09,984 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-21 20:35:09,719 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น NVDA
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 220, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 162, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-08-21 20:36:09,134 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น ASML
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 215, in main
+    financial_data = load_financial_data(symbol)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 98, in load_financial_data
+    raise FileNotFoundError(f"ไม่พบไฟล์: {path}")
+FileNotFoundError: ไม่พบไฟล์: data/ASML_financials.json
+2025-10-11 18:59:36,370 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8000
+2025-10-11 18:59:36,371 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-11 18:59:36,395 - INFO -  * Restarting with watchdog (fsevents)
+2025-10-11 18:59:37,405 - WARNING -  * Debugger is active!
+2025-10-11 18:59:37,412 - INFO -  * Debugger PIN: 220-798-151
+2025-10-11 19:00:44,429 - INFO - 127.0.0.1 - - [11/Oct/2025 19:00:44] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-10-11 19:00:44,451 - INFO - 127.0.0.1 - - [11/Oct/2025 19:00:44] "GET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2025-10-11 19:00:44,452 - INFO - 127.0.0.1 - - [11/Oct/2025 19:00:44] "GET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2025-10-11 19:00:44,470 - INFO - 127.0.0.1 - - [11/Oct/2025 19:00:44] "GET /?__debugger__=yes&cmd=resource&f=console.png&s=MF9jTHPjzFcCd6aHQZzv HTTP/1.1" 200 -
+2025-10-11 19:00:44,516 - INFO - 127.0.0.1 - - [11/Oct/2025 19:00:44] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2025-10-11 19:00:46,837 - INFO - 127.0.0.1 - - [11/Oct/2025 19:00:46] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-10-11 19:00:46,850 - INFO - 127.0.0.1 - - [11/Oct/2025 19:00:46] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-10-11 19:00:46,852 - INFO - 127.0.0.1 - - [11/Oct/2025 19:00:46] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-10-11 19:00:46,856 - INFO - 127.0.0.1 - - [11/Oct/2025 19:00:46] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png&s=MF9jTHPjzFcCd6aHQZzv HTTP/1.1[0m" 304 -
+2025-10-11 19:00:46,862 - INFO - 127.0.0.1 - - [11/Oct/2025 19:00:46] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-10-13 11:46:58,308 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8000
+2025-10-13 11:46:58,309 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-13 11:46:58,318 - INFO -  * Restarting with watchdog (fsevents)
+2025-10-13 11:46:59,336 - WARNING -  * Debugger is active!
+2025-10-13 11:46:59,344 - INFO -  * Debugger PIN: 220-798-151
+2025-10-13 11:47:24,193 - INFO - 127.0.0.1 - - [13/Oct/2025 11:47:24] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-10-13 11:47:24,216 - INFO - 127.0.0.1 - - [13/Oct/2025 11:47:24] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-10-13 11:47:24,216 - INFO - 127.0.0.1 - - [13/Oct/2025 11:47:24] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-10-13 11:47:24,221 - INFO - 127.0.0.1 - - [13/Oct/2025 11:47:24] "GET /?__debugger__=yes&cmd=resource&f=console.png&s=9KE3KlOomDwQkXwzg1kk HTTP/1.1" 200 -
+2025-10-13 11:47:24,281 - INFO - 127.0.0.1 - - [13/Oct/2025 11:47:24] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-10-15 19:23:26,919 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8000
+2025-10-15 19:23:26,919 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-15 19:23:26,935 - INFO -  * Restarting with watchdog (fsevents)
+2025-10-15 19:23:27,942 - WARNING -  * Debugger is active!
+2025-10-15 19:23:27,951 - INFO -  * Debugger PIN: 220-798-151
+2025-10-15 19:23:30,917 - INFO - 127.0.0.1 - - [15/Oct/2025 19:23:30] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-10-15 19:23:30,936 - INFO - 127.0.0.1 - - [15/Oct/2025 19:23:30] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-10-15 19:23:30,936 - INFO - 127.0.0.1 - - [15/Oct/2025 19:23:30] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-10-15 19:23:30,943 - INFO - 127.0.0.1 - - [15/Oct/2025 19:23:30] "GET /?__debugger__=yes&cmd=resource&f=console.png&s=7HVwmwdHeekd9zWg6WBu HTTP/1.1" 200 -
+2025-10-15 19:23:30,955 - INFO - 127.0.0.1 - - [15/Oct/2025 19:23:30] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-10-15 19:23:31,874 - INFO - 127.0.0.1 - - [15/Oct/2025 19:23:31] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-10-15 19:23:31,885 - INFO - 127.0.0.1 - - [15/Oct/2025 19:23:31] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2025-10-15 19:23:31,888 - INFO - 127.0.0.1 - - [15/Oct/2025 19:23:31] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2025-10-15 19:23:31,891 - INFO - 127.0.0.1 - - [15/Oct/2025 19:23:31] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png&s=7HVwmwdHeekd9zWg6WBu HTTP/1.1[0m" 304 -
+2025-10-15 19:23:31,898 - INFO - 127.0.0.1 - - [15/Oct/2025 19:23:31] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2025-10-21 18:46:20,175 - ERROR - เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น ASTS
+Traceback (most recent call last):
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 265, in main
+    export_ratios_to_file(symbol, ratios)
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/main.py", line 200, in export_ratios_to_file
+    pd.DataFrame.from_dict(ratios, orient="index")
+  File "/Users/npphone6622hotmail.com/Desktop/financials_formula/.venv/lib/python3.12/site-packages/pandas/core/frame.py", line 1898, in from_dict
+    if len(data) > 0:
+       ^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()

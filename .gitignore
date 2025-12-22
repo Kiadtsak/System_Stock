@@ -1,0 +1,12 @@
+
+data/
+data/*.json
+data/*.csv
+data/*.db
+data/*.xlsx
+data/*.tsv
+.env
+__pycache__/
+*.pyc
+
+

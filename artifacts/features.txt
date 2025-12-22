@@ -1,0 +1,25 @@
+Gross Profit Margin
+Operating Profit Margin
+Net Profit Margin
+RoA
+ROE
+EBITDA Margin
+Operating Cash Flow (OCF)
+Investing Cash Flow (ICF)
+Financing Cash Flow (FCF)
+Net Cash FLow (NCC)
+Free Cash Flow (FCF)
+Unlevered Free Cash Flow (UFCF)
+WACC
+Current Ratio
+Quick Ratio
+Cash Ratio
+Asset Turnover
+Inventory Turnover
+Receivables Turnover
+Days Inventory Oustanding (DIO)
+Days Sales Outstanding (DSO)
+Working Capital Turnover
+Owner Earnings
+EPS
+PE Ratio
