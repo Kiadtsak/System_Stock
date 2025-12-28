@@ -48,7 +48,7 @@ const state = {
       renderAll(data);
     } catch (err) {
       console.error(err);
-      setStatus("ดึงข้อมูลล้มเหลว: ไม่มีหุ้นชื่อนี้ : " + err.message, "error");
+      setStatus("ดึงข้อมูลล้มเหลว: " + err.message, "error");
     }
   }
   
@@ -94,22 +94,14 @@ const state = {
       const n = Number(r[k]);
       return Number.isFinite(n) ? n : null;
     });
-
+  
     // เอา 4 ตัวแรกไปลงกราฟ (เอาตามที่มีจริง)
-    const kROE = keys[0], kROA = keys[1] || keys[0], kEBITDA_MARGIN = keys[2] || keys[0], kNET_PROFIT_MATGIN = keys[3] || keys[0],
-          kGROSS_PROFIT_MARGIN = keys[4] || keys[0], kOperating_profit_margin = keys[5] || keys[0], kWACC = keys[6] || keys[0], kCost_of_equity = keys[7] || keys[0],
-          kUnlevered_free_cash_flow_UFCF = keys[8] || keys[0], kOperating_cash_flow_OCF= keys[9] || keys[0], kFree_cash_flow_FCF= keys[10]|| keys[0], kCurrent_Ratio= keys[11]|| keys[0],
-          kCash_ratio= keys[12]|| keys[0], kEPS= keys[13]|| keys[0], kPE_RATIO= keys[14]|| keys[0], kOwners_Earnings= keys[15]|| keys[0];
+    const k1 = keys[0], k2 = keys[1] || keys[0], k3 = keys[2] || keys[0], k4 = keys[3] || keys[0];
   
-    setupOrUpdateLine("ROE", years, s(kROE), kROE);
-    setupOrUpdateLine("RoA", years, s(kROA), kROA);
-    setupOrUpdateBar("EBITDA MARGIN", years, s(kEBITDA_MARGIN), kEBITDA_MARGIN);
-    setupOrUpdateBar("Net Profit Margin", years, s(kNET_PROFIT_MATGIN), kNET_PROFIT_MATGIN);
-    setupOrUpdateChart("GROSS_PROFIT_MARGIN", "line", years, s(kGROSS_PROFIT_MARGIN), kGROSS_PROFIT_MARGIN);
-    setupOrUpdateLine("PE_Ratio", years, s(kPE_RATIO), kPE_RATIO,);
-    setupOrUpdateChart("GROSS_PROFIT_MARGIN", "line",  years, s(kGROSS_PROFIT_MARGIN), kGROSS_PROFIT_MARGIN);
-  
-    setupOrUpdateChart("EPS", "line", years, s(kEPS), kEPS);
+    setupOrUpdateLine("homeChart", years, s(k1), k1);
+    setupOrUpdateBar("fs1", years, s(k2), k2);
+    setupOrUpdateBar("fs2", years, s(k3), k3);
+    setupOrUpdateBar("fs3", years, s(k4), k4);
   }
   
   function rowsToRatios(rows){
@@ -188,6 +180,31 @@ const state = {
     renderRatioSection(data);
   }
   
+  // ================== การ์ดผลลัพธ์ (ด้านล่าง “ผลลัพธ์จาก API”) ==================
+  /*
+  function renderCards(data) {
+    const cards = document.getElementById("cards");
+    if (!cards) return;
+    cards.innerHTML = "";
+  
+    if (data.basic_info) {
+      cards.appendChild(buildKVCard("BASIC_INFO", data.basic_info));
+    }
+  
+    const symbol = data.symbol || data.Symbol;
+    if (symbol) {
+      cards.appendChild(buildKVCard("SYMBOL", { Symbol: symbol }));
+    }
+  
+    const income   = data.income_statement       || data.income;
+    const balance  = data.balance_sheet          || data.balance_sheet_statement;
+    const cashflow = data.cash_flow_statement    || data.cashflow;
+  
+    if (income)   cards.appendChild(buildStatementCard("INCOME_STATEMENT", income));
+    if (balance)  cards.appendChild(buildStatementCard("BALANCE_SHEET", balance));
+    if (cashflow) cards.appendChild(buildStatementCard("CASH_FLOW_STATEMENT", cashflow));
+  }
+*/
   function buildKVCard(title, obj) {
     const card = document.createElement("div");
     card.className = "card";
@@ -257,6 +274,49 @@ const state = {
     return String(v);
   }
   
+  // ================== กราฟงบ 3 ชุด ==================
+  /*
+  function renderFinancialCharts(data) {
+    const income   = data.income_statement    || data.income;
+    const balance  = data.balance_sheet       || data.balance_sheet_statement;
+    const cashflow = data.cash_flow_statement || data.cashflow;
+    
+    if (!income || !balance || !cashflow) return;
+  
+    const { years, series } = buildSeries(income, balance, cashflow);
+    
+    // ใช้ข้อมูลจริงแทนเดโม
+    setupOrUpdateLine("homeChart", years, series.revenue, "Revenue");
+    setupOrUpdateBar("fs1", years, series.revenue, "Revenue");
+    setupOrUpdateBar("fs2", years, series.totalAssets, "Total Assets");
+    setupOrUpdateBar("fs3", years, series.cfo, "Operating Cash Flow");
+  }
+*/
+/*
+  function buildSeries(income, balance, cashflow) {
+    const revenueObj = pickField(income, ["Revenue", "Total Revenue", "Revenues"]) || firstObject(income);
+    const cfoObj     = pickField(cashflow, [
+      "Operating Cash Flow",
+      "Net Cash Provided by Operating Activities",
+      "Cash Flow from Operations"
+    ]) || firstObject(cashflow);
+    const totalAssetsObj = pickField(balance, ["Total Assets", "Total assets"]) || firstObject(balance);
+  
+    const base = revenueObj || cfoObj || totalAssetsObj || {};
+    const years = Object.keys(base).map(String).sort();
+  
+    const arr = (obj) => years.map(y => (obj && obj[y] != null ? obj[y] : null));
+  
+    return {
+      years,
+      series: {
+        revenue:     arr(revenueObj),
+        cfo:         arr(cfoObj),
+        totalAssets: arr(totalAssetsObj),
+      }
+    };
+  }
+  */
   function pickField(obj, keys) {
     if (!obj) return null;
     for (const k of keys) {
@@ -452,4 +512,5 @@ const state = {
       chart.update();
     }
   }
+  
   

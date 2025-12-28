@@ -9,146 +9,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <scrip src="https://cdn.jsdelivr.net/npm/chart.js"></scrip>
-  
-  <!-- <script src="app.js"></script>  // ใช้ตัวล่างแทน -->
-  <!--
-  <style>
-    :root{
-      --bg:#0b1020;
-      --panel:#0f172a;
-      --muted:#a6b2d1;
-      --text:#e9eefc;
-      --brand:#22c55e;
-      --brand-2:#60a5fa;
-      --accent:#f59e0b;
-      --danger:#ef4444;
-      --ring: 0 0 0 3px rgba(96,165,250,.35);
-      --radius: 16px;
-      --shadow: 0 10px 30px rgba(2,6,23,.35);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      background:
-        radial-gradient(1000px 700px at 70% -10%, rgba(96,165,250,.18), transparent 60%),
-        radial-gradient(820px 520px at -10% 30%, rgba(34,197,94,.14), transparent 55%),
-        var(--bg);
-      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
-      color:var(--text);
-    }
-    a{color:inherit;text-decoration:none}
-
-    .app{display:grid; grid-template-columns: 280px 1fr; min-height:100vh}
-    .sidebar{
-      position:sticky; top:0; align-self:start; height:100vh;
-      background: linear-gradient(180deg, #0e1530, #0c1227 60%, transparent), var(--panel);
-      border-right:1px solid rgba(148,163,184,.1);
-      padding:20px 18px; overflow:auto;
-    }
-    .brand{
-      display:flex; align-items:center; gap:12px; padding:10px 12px; margin-bottom:14px;
-      border-radius:12px; background:linear-gradient(135deg, rgba(96,165,250,.18), rgba(34,197,94,.14));
-      box-shadow: inset 0 0 0 1px rgba(148,163,184,.12);
-    }
-    .brand .logo{
-      width:34px;height:34px;border-radius:9px; display:grid; place-items:center;
-      background: radial-gradient(120% 120% at 20% 20%, #60a5fa 0%, #22c55e 60%, #0ea5e9 100%);
-      box-shadow: 0 8px 20px rgba(14,165,233,.35);
-    }
-    .brand h1{font-size:15px;line-height:1.2;margin:0}
-    .brand h1 span{display:block;font-size:12px;color:var(--muted);font-weight:500}
-
-    .nav{display:flex; flex-direction:column; gap:6px; margin-top:10px}
-    .nav-btn{
-      display:flex; align-items:center; gap:12px; width:100%;
-      padding:11px 12px; border-radius:12px; border:1px solid transparent;
-      color:#cbd5e1; background:transparent; cursor:pointer; font-weight:600;
-      transition: .2s ease; letter-spacing:.2px;
-    }
-    .nav-btn svg{opacity:.9}
-    .nav-btn:hover{background:rgba(148,163,184,.06); border-color:rgba(148,163,184,.18)}
-    .nav-btn.active{
-      background:linear-gradient(135deg, rgba(96,165,250,.16), rgba(34,197,94,.12));
-      color:var(--text); border-color:rgba(148,163,184,.25); box-shadow:var(--shadow)
-    }
-
-    .content{padding:34px 38px}
-    .topbar{display:flex; align-items:center; justify-content:space-between; gap:18px; margin-bottom:26px}
-    .title{font-size:36px; font-weight:900; letter-spacing:.3px; margin:0}
-    .title small{display:block; font-size:14px; color:var(--muted); font-weight:500}
-
-    .grid{display:grid; gap:18px}
-    .grid.cols-2{grid-template-columns:1fr 1fr}
-    .grid.cols-3{grid-template-columns:repeat(3, 1fr)}
-    @media (max-width:1100px){.app{grid-template-columns: 92px 1fr} .hide-sm{display:none}}
-    @media (max-width:860px){.grid.cols-2,.grid.cols-3{grid-template-columns:1fr}}
-
-    .card{
-      background:linear-gradient(180deg, rgba(2,6,23,.55), rgba(2,6,23,.2)),
-                 linear-gradient(135deg, rgba(148,163,184,.08), rgba(148,163,184,.04));
-      border:1px solid rgba(148,163,184,.12);
-      border-radius: var(--radius);
-      padding:18px 18px 16px; box-shadow: var(--shadow);
-    }
-    .card h3{margin:0 0 10px; font-size:14px; text-transform:uppercase; letter-spacing:.6px; color:#c9d5f0}
-
-    .field{display:flex; gap:10px}
-    .input{
-      flex:1; height:46px; background:#0b132b; color:var(--text);
-      border:1px solid rgba(148,163,184,.22); border-radius:12px; padding:0 14px;
-      outline:none; transition:.2s; font-weight:600
-    }
-    .input::placeholder{color:#64748b; font-weight:500}
-    .input:focus{box-shadow:var(--ring); border-color:#60a5fa}
-    .btn{
-      height:46px; padding:0 18px; font-weight:800; letter-spacing:.3px;
-      border-radius:12px; border:1px solid transparent; cursor:pointer; transition:.2s;
-      background:linear-gradient(135deg, #22c55e, #16a34a); color:#07210e
-    }
-    .btn:hover{filter:brightness(1.05)}
-    .btn.ghost{background:transparent;color:#cbd5e1;border-color:rgba(148,163,184,.22)}
-
-    .tag{
-      display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:700;
-      padding:6px 10px; border-radius:999px; border:1px solid rgba(148,163,184,.22);
-      background:rgba(148,163,184,.06); color:#dbe6ff
-    }
-
-    .tabs{display:flex; gap:8px; flex-wrap:wrap}
-    .tab{
-      padding:8px 12px; border-radius:10px; border:1px solid rgba(148,163,184,.18);
-      background:rgba(148,163,184,.06); color:#cbd5e1; font-weight:700; cursor:pointer
-    }
-    .tab.active{
-      background:linear-gradient(135deg, rgba(96,165,250,.16), rgba(34,197,94,.12));
-      color:var(--text)
-    }
-
-    table{width:100%; border-collapse:separate; border-spacing:0; overflow:hidden; border-radius:12px}
-    thead th{background:#0f1732; color:#c9d5f0; text-align:left; padding:12px; font-size:12px; letter-spacing:.5px}
-    tbody td{padding:12px; border-top:1px solid rgba(148,163,184,.12)}
-
-    .muted{color:var(--muted)}
-    .sep{height:1px; background:rgba(148,163,184,.12); margin:10px 0 14px}
-
-    /* ★★ เสริมสำหรับ toast */
-    #status .toast{
-      padding:10px 12px;
-      border-radius:12px;
-      margin-top:10px;
-      font-size:13px;
-      background:rgba(148,163,184,.1);
-    }
-    #status .toast.error{background:rgba(239,68,68,.12); border:1px solid rgba(239,68,68,.4)}
-    #status .loading{font-size:13px; margin-top:8px}
-    .kv{margin-top:6px}
-    .kv-row{display:flex; justify-content:space-between; gap:10px; font-size:13px; padding:4px 0; border-bottom:1px solid rgba(148,163,184,.12)}
-    .kv-row .k{color:var(--muted)}
-    .kv-row .v{text-align:right}
-  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="./app.js" defer></script>
 </head>
--->
 <body>
   <div class="app">
     <!-- ==== Sidebar ==== -->
@@ -246,16 +109,40 @@
 
         <div class="card" style="margin-top:18px">
           <h3>ตัวอย่างกราฟ</h3>
-          <canvas id="homeChart" height="110"></canvas>
+          <!--canvas id="ROE" height="50"></!--canvas-->  <!-- ปรับความตรงนี้ได้เลย-->
+          <div class="chartBox"><canvas id="ROE"></canvas></div>
+          <canvas id="RoA" height="50"></canvas>
+          <canvas id="PE_Ratio" height="50"></canvas>
+          <!--canvas id="EPS" height="50"></!--canvas-->
+          <div class="chartBox"><canvas id="EPS"></canvas></div>
+
+        </div>
+      <!--</section-->
+    wq
+        <div class="card" style="margin-top: 20;">
+          <h4>ตัวอย่างกราฟงบการเงิน</h4>
+          <canvas id="financialChart" height="100"></canvas>
+          
+          <!--div class="chartBox"><canvas id="RoA"></canvas></!--div-->
+          <div class="chartBox"><canvas id="EBITDA MARGIN"></canvas></div>
+          <div class="chartBox"><canvas id="Net Profit Margin"></canvas></div>
+          <div class="chartBox"><canvas id="GROSS_PROFIT_MARGIN"></canvas></div>
+    
         </div>
       </section>
-
+      <!--div class="chartBox"><canvas id="homeChart" height="50"></canvas></!--div>
+      
+      <div class="chartBox"><canvas id="fs1"height="50"></canvas></div>
+      <div class="chartBox"><canvas id="fs2"></canvas></div>
+      <div class="chartBox"><canvas id="fs3"></canvas></div -->  
+    
+      
       <section data-page="Compare" hidden>
         <div class="topbar">
           <h2 class="title">⚖️ เปรียบเทียบหุ้นรายตัว</h2>
           <span class="tag">Normalize & Benchmark</span>
         </div>
-
+        <!--
         <div class="grid cols-2">
           <div class="card">
             <h3>ตั้งค่าพื้นฐาน</h3>
@@ -333,7 +220,8 @@
           <div class="card"><h3 id="rTitle2">Net Profit Margin</h3><canvas id="rChart2" height="120"></canvas></div>
         </div>
       </section>
-
+    -->
+     <!-- 
       <section data-page="Screener" hidden>
         <div class="topbar"><h2 class="title">🧹 Screener <small>คัดกรองตามเงื่อนไข</small></h2></div>
         <div class="card">
@@ -371,7 +259,7 @@
       </section>
 
     </main>
-  </div>
+  </div> -->
 <!-- ★★ JS ที่ดึง API /api/financials ให้เซฟเป็น app.js ไว้โฟลเดอร์เดียวกับไฟล์นี้ -->
 <script src="./app.js"></script>
 </body>
