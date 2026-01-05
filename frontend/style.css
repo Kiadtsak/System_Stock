@@ -141,7 +141,12 @@
     overflow: hidden;       /* กันยืดล้น */
   }
 
-  
+  .chart-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  }
+
   .chartBox canvas{
     display: block;
     width: 100% !important;
@@ -156,55 +161,49 @@
   }
 
   /* grid สำหรับกราฟ */
-.charts-grid{
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-  gap:16px;
-  align-items: stretch;
-}
+  .charts-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap:16px;
+    align-items: stretch;
+  }
 
 /* การ์ดกราฟ */
-.chart-card{
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 16px;
-  padding: 14px 14px 10px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-  backdrop-filter: blur(8px);
-  transition: transform .18s ease, border-color .18s ease;
-}
-.chart-card:hover{
-  transform: translateY(-2px);
-  border-color: rgba(255,255,255,0.16);
-}
+  .chart-card{
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 14px 14px 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    backdrop-filter: blur(8px);
+    transition: transform .18s ease, border-color .18s ease;
+  }
+  .chart-card:hover{
+    transform: translateY(-2px);
+    border-color: rgba(255,255,255,0.16);
+  }
 
-.chart-head{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom:10px;
-}
-.chart-title{
-  font-weight:700;
-  font-size:14px;
-  line-height:1.2;
-  margin:0;
-}
+  .chart-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:10px;
+  }
+  .chart-title{
+    font-weight:700;
+    font-size:14px;
+    line-height:1.2;
+    margin:0;
+  }
 
-.chart-sub{
-  font-size:12px;
-  opacity:.75;
-  margin-top:4px;
-}
-/*
-.chart-wrap{
-  height: 10px; 
-  position: relative;
-}
-.chart-wrap canvas{
- 
-  width:70% !important;
-  height:70% !important;
-}
+  .chart-sub{
+    font-size:12px;
+    opacity:.75;
+    margin-top:4px;
+  }
 
+  /* มือถือให้กลับไปเรียงลงล่างอัตโนมัติ */
+  @media (max-width: 900px){
+    .chart-row{ grid-template-columns: 1fr; }
+  }

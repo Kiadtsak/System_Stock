@@ -108,7 +108,15 @@ const state = {
     setupOrUpdateChart("GROSS_PROFIT_MARGIN", "line", years, s(kGROSS_PROFIT_MARGIN), kGROSS_PROFIT_MARGIN);
     setupOrUpdateLine("PE_Ratio", years, s(kPE_RATIO), kPE_RATIO,);
     setupOrUpdateChart("GROSS_PROFIT_MARGIN", "line",  years, s(kGROSS_PROFIT_MARGIN), kGROSS_PROFIT_MARGIN);
-  
+    setupOrUpdateBar("Operating_profit_margin", years, s(kOperating_profit_margin), kOperating_profit_margin);
+    setupOrUpdateBar("Owners_Earnings", years, s(kOwners_Earnings), kOwners_Earnings);
+    setupOrUpdateLine("Current_Ratio", years, s(kCurrent_Ratio), kCurrent_Ratio);
+    setupOrUpdateLine("Cash_ratio", years, s(kCash_ratio), kCash_ratio);
+    setupOrUpdateBar("Unlevered_free_cash_flow_UFCF", years, s(kUnlevered_free_cash_flow_UFCF), kUnlevered_free_cash_flow_UFCF);
+    setupOrUpdateBar("Operating_cash_flow_OCF", years, s(kOperating_cash_flow_OCF), kOperating_cash_flow_OCF);
+    setupOrUpdateBar("Free_cash_flow_FCF", years, s(kFree_cash_flow_FCF), kFree_cash_flow_FCF); 
+    setupOrUpdateBar("WACC", years, s(kWACC), kWACC);
+    setupOrUpdateBar("Cost_of_equity", years, s(kCost_of_equity), kCost_of_equity);
     setupOrUpdateChart("EPS", "line", years, s(kEPS), kEPS);
   }
   

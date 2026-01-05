@@ -1,6 +1,6 @@
-from config.Settings import YEAR
+from Blackend.Settings import YEAR
 #from processing import profitability, liquidity, efficiency, valuation
-from processing.Analysis_Statement import CashFlowModel
+from Blackend.Analysis_Statement import CashFlowModel
 
 def calculate_ratios_by_year(income_data, balance_data, cashflow_data, basic_info, year=YEAR):
     results = {}
@@ -110,22 +110,3 @@ def calculate_ratios_by_year(income_data, balance_data, cashflow_data, basic_inf
         return None
     
     return results
-
-"""
-def export_all_year_vertical(ratios_by_year, company="MyCompany", filename="result.csv"):
-    csv_filename = f"financials/{company}/{filename}"
-    import csv
-    with open(filename, mode="w", newline="") as file:
-        writer = csv.writer(file)
-        writer.writerow(["Company", "Year", "Metric", "Value"])
-
-        for year in sorted(ratios_by_year):
-            metrics = ratios_by_year[year]
-            for metric, value in metrics.items():
-                try:
-                    val = round(float(value), 2)
-                except (TypeError, ValueError):
-                    val = "" 
-                writer.writerow([company, year, metric, val])
-    print(f"✅ Exported CSV: {filename}")
-"""

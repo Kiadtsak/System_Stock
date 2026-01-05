@@ -11,9 +11,9 @@ from typing import Dict, Tuple, List, Any
 
 # ถ้ายังอยากเก็บ import เดิมไว้ก็ได้ แต่เวอร์ชันนี้จะไม่เรียกใช้ API
 # from loader.load_stock_financial_statement_data_json import FinancialsStatement
-from processing.calculater_all import calculate_ratios_by_year
-from Valuetion_model.valuetion_financials import run_valuation_for_symbol  #== Valuetion
-from services.financials_statement import FinancialsStatement
+from Blackend.calculater_all import calculate_ratios_by_year
+from Blackend.valuetion_financials import run_valuation_for_symbol  #== Valuetion
+from Blackend.financials_statement import FinancialsStatement
 # =========================
 # Config
 # =========================
@@ -50,7 +50,7 @@ def parse_years(years_arg: str | None) -> List[int]:
       - เว้นว่าง -> default = [2015..CURRENT_YEAR]
     """
     if not years_arg:
-        return list(range(2015, CURRENT_YEAR + 1))
+        return list(range(1990, CURRENT_YEAR + 1))  # ค่าเริ่มต้น 2015..ปัจจุบัน
 
     years_arg = years_arg.strip()
     years: List[int] = []

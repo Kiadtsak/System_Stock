@@ -6,6 +6,10 @@ data/*.db
 data/*.xlsx
 data/*.tsv
 .env
+services/gemina_ai
+services/get_api
+services/load_stock_financials_statements
+errors.log
 __pycache__/
 *.pyc
 

@@ -1,5 +1,5 @@
 import numpy as np
-from config.Settings import TAX_RATE, RISK_FREE_RATE, BETA
+from Blackend.Settings import TAX_RATE, RISK_FREE_RATE, BETA
 from typing import Dict, Optional
 
 

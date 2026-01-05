@@ -80,6 +80,7 @@
               <div>
                 <div class="muted">PE (TTM)</div>
                 <div style="font-size:28px; font-weight:900">—</div>
+                  <i>หมายเหตุ:</i> PE Ratio (Price to Earnings Ratio) เป็นอัตราส่วนที่ใช้วัดมูลค่าหุ้นเทียบกับกำไรสุทธิต่อหุ้น (Earnings Per Share - EPS) ของบริษัทในช่วง 12 เดือนที่ผ่านมา (TTM - Trailing Twelve Months) โดยคำนวณจากการนำราคาหุ้นปัจจุบันมาหารด้วย EPS ในช่วง 12 เดือนที่ผ่านมา 
               </div>
               <div>
                 <div class="muted">ROIC</div>
@@ -94,7 +95,7 @@
         </div>
 
         <!-- ★★ แสดง source_file ที่มาของข้อมูล -->
-        <div class="card" style="margin-top:18px">
+        <div class="card" style="margin-top:20px">
           <h3>แหล่งข้อมูลที่ใช้ล่าสุด</h3>
           <p class="muted">ไฟล์: <span id="sourceInfo">—</span></p>
         </div>
@@ -111,16 +112,16 @@
           <h3>ตัวอย่างกราฟ</h3>
           <!--canvas id="ROE" height="50"></!--canvas-->  <!-- ปรับความตรงนี้ได้เลย-->
           <div class="chartBox"><canvas id="ROE"></canvas></div>
-          <canvas id="RoA" height="50"></canvas>
-          <canvas id="PE_Ratio" height="50"></canvas>
+          <div class="chartBox"><canvas id="RoA"></canvas></div >
+          <div class="chartBox"><canvas id="PE_Ratio"></canvas></div>
           <!--canvas id="EPS" height="50"></!--canvas-->
           <div class="chartBox"><canvas id="EPS"></canvas></div>
 
         </div>
       <!--</section-->
-    wq
+    
         <div class="card" style="margin-top: 20;">
-          <h4>ตัวอย่างกราฟงบการเงิน</h4>
+          <h4>Profitability</h4>
           <canvas id="financialChart" height="100"></canvas>
           
           <!--div class="chartBox"><canvas id="RoA"></canvas></!--div-->
@@ -129,138 +130,32 @@
           <div class="chartBox"><canvas id="GROSS_PROFIT_MARGIN"></canvas></div>
     
         </div>
-      </section>
-      <!--div class="chartBox"><canvas id="homeChart" height="50"></canvas></!--div>
-      
-      <div class="chartBox"><canvas id="fs1"height="50"></canvas></div>
-      <div class="chartBox"><canvas id="fs2"></canvas></div>
-      <div class="chartBox"><canvas id="fs3"></canvas></div -->  
-    
-      
-      <section data-page="Compare" hidden>
-        <div class="topbar">
-          <h2 class="title">⚖️ เปรียบเทียบหุ้นรายตัว</h2>
-          <span class="tag">Normalize & Benchmark</span>
+
+        <div class="card" style="margin-top:20px;">
+          <h4>Financials</h4>
+          <canvas id="Capital cost" height="100"></canvas>
+          
+          <div class="chartBox"><canvas id="WACC"></canvas></div>
+          <div class="chartBox"><canvas id="Cost_of_equity"></canvas></div> 
         </div>
-        <!--
-        <div class="grid cols-2">
-          <div class="card">
-            <h3>ตั้งค่าพื้นฐาน</h3>
-            <div class="field" style="margin-bottom:10px">
-              <input class="input" placeholder="ฐาน: NVDA"/>
-              <button class="btn ghost">โหลด</button>
-            </div>
-            <div class="field">
-              <input class="input" placeholder="หุ้นเปรียบเทียบ (เช่น AMD, AAPL)"/>
-              <button class="btn">เพิ่ม</button>
-            </div>
+
+        <div class="chart-roww">
+          <div class="card" style="margin-top:20px;">
+            <h4>Liquidity Ratios</h4>
+            <canvas id="Liquidity Ratios" height="100"></canvas>
+            
+            <div class="chartBox"><canvas id="Current_Ratio"></canvas></div>
+            <div class="chartBox"><canvas id="Cash_ratio"></canvas></div>
           </div>
 
-          <div class="card">
-            <h3>KPI Summary (Latest)</h3>
-            <table>
-              <thead><tr><th>Metric</th><th>Base</th><th>Peer</th><th>Δ</th></tr></thead>
-              <tbody>
-                <tr><td>PE</td><td>—</td><td>—</td><td>—</td></tr>
-                <tr><td>ROIC</td><td>—</td><td>—</td><td>—</td></tr>
-                <tr><td>Net Margin</td><td>—</td><td>—</td><td>—</td></tr>
-              </tbody>
-            </table>
+          <div class="card" style="margin-top:20px;">
+            <h4>Leverage Ratios</h4>
+            <canvas id="Leverage Ratios" height="100"></canvas>
+            
+            <div class="chartBox"><canvas id="Debt to Equity Ratio"></canvas></div>
+            <div class="chartBox"><canvas id="Interest Coverage Ratio"></canvas></div> 
           </div>
-        </div>
-
-        <div class="card" style="margin-top:18px">
-          <h3>Plots (Time-Series)</h3>
-          <canvas id="compareChart" height="120"></canvas>
-        </div>
       </section>
-
-      <section data-page="Data Analysis" hidden>
-        <div class="topbar">
-          <h2 class="title">📊 Data Analysis <small>สถิติและการเปรียบเทียบเชิงลึก</small></h2>
-        </div>
-        <div class="grid cols-3">
-          <div class="card"><h3>Growth</h3><canvas id="da1" height="120"></canvas></div>
-          <div class="card"><h3>Margin</h3><canvas id="da2" height="120"></canvas></div>
-          <div class="card"><h3>Leverage</h3><canvas id="da3" height="120"></canvas></div>
-        </div>
-      </section>
-
-      <section data-page="Financials" hidden>
-        <div class="topbar"><h2 class="title">📑 Financials <small>ภาพรวมงบ 3 ชุด</small></h2></div>
-        <div class="grid cols-3">
-          <div class="card"><h3>Income Statement</h3><canvas id="fs1" height="120"></canvas></div>
-          <div class="card"><h3>Balance Sheet</h3><canvas id="fs2" height="120"></canvas></div>
-          <div class="card"><h3>Cash Flow</h3><canvas id="fs3" height="120"></canvas></div>
-        </div>
-      </section>
-
-      <section data-page="Financials Statement" hidden>
-        <div class="topbar"><h2 class="title">📜 งบการเงิน (รายละเอียด)</h2></div>
-        <div class="card">
-          <h3>ตัวอย่างตาราง</h3>
-          <table>
-            <thead>
-              <tr><th>ปี</th><th>ยอดขาย</th><th>กำไรสุทธิ</th><th>กระแสเงินสดจากการดำเนินงาน</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>2021</td><td>—</td><td>—</td><td>—</td></tr>
-              <tr><td>2022</td><td>—</td><td>—</td><td>—</td></tr>
-              <tr><td>2023</td><td>—</td><td>—</td><td>—</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section data-page="Ratios" hidden>
-        <div class="topbar"><h2 class="title">📈 Financial Ratios</h2></div>
-        <div class="tabs" id="ratioTabs"></div>
-        <div class="grid cols-2" style="margin-top:14px">
-          <div class="card"><h3 id="rTitle1">Operating Profit Margin</h3><canvas id="rChart1" height="120"></canvas></div>
-          <div class="card"><h3 id="rTitle2">Net Profit Margin</h3><canvas id="rChart2" height="120"></canvas></div>
-        </div>
-      </section>
-    -->
-     <!-- 
-      <section data-page="Screener" hidden>
-        <div class="topbar"><h2 class="title">🧹 Screener <small>คัดกรองตามเงื่อนไข</small></h2></div>
-        <div class="card">
-          <div class="grid cols-3">
-            <div><div class="muted">PE ⩽</div><input class="input" placeholder="20"/></div>
-            <div><div class="muted">ROIC ⩾</div><input class="input" placeholder="15%"/></div>
-            <div><div class="muted">Debt/Equity ⩽</div><input class="input" placeholder="0.5"/></div>
-          </div>
-          <div style="margin-top:14px; display:flex; gap:10px">
-            <button class="btn">คัดกรอง</button>
-            <button class="btn ghost">ล้างค่า</button>
-          </div>
-        </div>
-      </section>
-
-      <section data-page="Valuetion" hidden>
-        <div class="topbar"><h2 class="title">🔍 AI ประเมินมูลค่าหุ้น</h2></div>
-        <div class="grid cols-2">
-          <div class="card">
-            <h3>พารามิเตอร์</h3>
-            <div class="grid cols-3">
-              <div><div class="muted">Growth</div><input class="input" placeholder="12%"/></div>
-              <div><div class="muted">Discount</div><input class="input" placeholder="10%"/></div>
-              <div><div class="muted">Terminal</div><input class="input" placeholder="3%"/></div>
-            </div>
-            <div style="margin-top:12px"><button class="btn">คำนวณมูลค่า</button></div>
-          </div>
-          <div class="card"><h3>ผลลัพธ์</h3><canvas id="valChart" height="120"></canvas></div>
-        </div>
-      </section>
-
-      <section data-page="Visualize" hidden>
-        <div class="topbar"><h2 class="title">🖼️ Visualize <small>กราฟสวยงามพร้อมแชร์</small></h2></div>
-        <div class="card"><h3>ภาพรวม</h3><canvas id="vizChart" height="120"></canvas></div>
-      </section>
-
-    </main>
-  </div> -->
-<!-- ★★ JS ที่ดึง API /api/financials ให้เซฟเป็น app.js ไว้โฟลเดอร์เดียวกับไฟล์นี้ -->
-<script src="./app.js"></script>
+     
 </body>
 </html>

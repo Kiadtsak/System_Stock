@@ -1,23 +1,18 @@
 import os
 import os
 
-#from dataclasses import dataclass
-
-#@dataclass
-#class Settings:
-#    data_dir: str = os.getenv("DATA_DIR", "data")
-#    export_dir: str = os.getenv("EXPORT_DIR", "exports")
-#    model_dir: str = os.getenv("MODEL_DIR", "train/models")
-#    random_state: int = int(os.getenv("RANDOM_STATE", "42"))
-
-#SETTINGS = Settings()
-#from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import SecretStr, field_validator
 
-#class settings(BaseSettings):
+
 API_KEY: str | None = None
 OPENAI_API_KEY: str | None = None
-YEAR = ["2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027"]
+YEAR = [
+    "1999", "2000", "2001", "2002", "2003", "2004", "2005", 
+    "2006", "2007", "2008", "2009", "2010", "2011", "2012", 
+    "2013", "2014","2015", "2016", "2017", "2018", "2019", 
+    "2020", "2021", "2022", "2023", "2024", "2025", "2026", 
+    "2027", "2028", "2029", "2030"
+        ]
 TAX_RATE = 0.21                                         # อัตราภาษีนิติบุคคล 21% สำหรับสหรัฐอเมริกา
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))   # โฟลเดอร์ของไฟล์ปัจจุบัน
 DATA_DIR = os.path.join(BASE_DIR, "data")
