@@ -4,6 +4,7 @@
     "Year":"2018",
     "ROE":40.7844,
     "RoA":27.1061,
+    "ROIC":49.9221,
     "EBITDA Margin":35.5775,
     "Net Profit Margin":31.3671,
     "Gross Profit MArgin":59.9341,
@@ -17,13 +18,15 @@
     "Cash Ratio":6.1648,
     "EPS":0.1272,
     "PE Ratio":25.6923,
-    "Owner's Earnings":3654000000.0
+    "Owner's Earnings":3654000000.0,
+    "PBV Ratio":10.7116
   },
   {
     "Stock Symbol":"NVDA",
     "Year":"2019",
     "ROE":44.3267,
     "RoA":31.1541,
+    "ROIC":31.576,
     "EBITDA Margin":35.985,
     "Net Profit Margin":35.3448,
     "Gross Profit MArgin":61.2069,
@@ -37,13 +40,15 @@
     "Cash Ratio":5.5847,
     "EPS":0.1703,
     "PE Ratio":34.5882,
-    "Owner's Earnings":5860000000.0
+    "Owner's Earnings":5860000000.0,
+    "PBV Ratio":15.3074
   },
   {
     "Stock Symbol":"NVDA",
     "Year":"2020",
     "ROE":22.9105,
     "RoA":16.1478,
+    "ROIC":68.0428,
     "EBITDA Margin":31.1687,
     "Net Profit Margin":25.6091,
     "Gross Profit MArgin":61.9894,
@@ -57,13 +62,15 @@
     "Cash Ratio":6.1082,
     "EPS":0.1148,
     "PE Ratio":108.8333,
-    "Owner's Earnings":2949000000.0
+    "Owner's Earnings":2949000000.0,
+    "PBV Ratio":26.0686
   },
   {
     "Stock Symbol":"NVDA",
     "Year":"2021",
     "ROE":25.6438,
     "RoA":15.0464,
+    "ROIC":18.9189,
     "EBITDA Margin":34.1289,
     "Net Profit Margin":25.979,
     "Gross Profit MArgin":62.3448,
@@ -77,13 +84,15 @@
     "Cash Ratio":2.9455,
     "EPS":0.1755,
     "PE Ratio":163.3889,
-    "Owner's Earnings":7261000000.0
+    "Owner's Earnings":7261000000.0,
+    "PBV Ratio":42.9668
   },
   {
     "Stock Symbol":"NVDA",
     "Year":"2022",
     "ROE":36.6451,
     "RoA":22.0698,
+    "ROIC":24.5996,
     "EBITDA Margin":42.1751,
     "Net Profit Margin":36.2339,
     "Gross Profit MArgin":64.929,
@@ -97,13 +106,15 @@
     "Cash Ratio":4.8923,
     "EPS":0.3907,
     "PE Ratio":37.4615,
-    "Owner's Earnings":15265000000.0
+    "Owner's Earnings":15265000000.0,
+    "PBV Ratio":13.7031
   },
   {
     "Stock Symbol":"NVDA",
     "Year":"2023",
     "ROE":19.7638,
     "RoA":10.6066,
+    "ROIC":15.3822,
     "EBITDA Margin":22.1917,
     "Net Profit Margin":16.1934,
     "Gross Profit MArgin":56.9289,
@@ -117,13 +128,15 @@
     "Cash Ratio":2.0259,
     "EPS":0.1756,
     "PE Ratio":275.1111,
-    "Owner's Earnings":9952000000.0
+    "Owner's Earnings":9952000000.0,
+    "PBV Ratio":55.7243
   },
   {
     "Stock Symbol":"NVDA",
     "Year":"2024",
     "ROE":69.2447,
     "RoA":45.2775,
+    "ROIC":60.1244,
     "EBITDA Margin":58.4075,
     "Net Profit Margin":48.8493,
     "Gross Profit MArgin":72.7176,
@@ -137,13 +150,15 @@
     "Cash Ratio":2.4442,
     "EPS":1.2053,
     "PE Ratio":110.9835,
-    "Owner's Earnings":36059000000.0
+    "Owner's Earnings":36059000000.0,
+    "PBV Ratio":77.1469
   },
   {
     "Stock Symbol":"NVDA",
     "Year":"2025",
     "ROE":91.8729,
     "RoA":65.3041,
+    "ROIC":84.0019,
     "EBITDA Margin":66.0069,
     "Net Profit Margin":55.848,
     "Gross Profit MArgin":74.9887,
@@ -156,7 +171,8 @@
     "Current Ratio":4.4399,
     "Cash Ratio":2.3943,
     "EPS":2.968,
-    "PE Ratio":63.1448,
-    "Owner's Earnings":87363000000.0
+    "PE Ratio":62.7946,
+    "Owner's Earnings":87363000000.0,
+    "PBV Ratio":57.7295
   }
 ]

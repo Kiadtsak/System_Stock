@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <scrip src="https://cdn.jsdelivr.net/npm/chart.js"></scrip>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="./app.js" defer></script>
 </head>
@@ -24,15 +24,16 @@
         </div>
         <h1>Financials Dashboard <span>Pro Visual & Analytics</span></h1>
       </div>
-
+      <!--
       <nav class="nav" id="nav">
-        <!-- Buttons injected by JS -->
-      </nav>
-
+         Buttons injected by JS 
+      </nav>  -->
+      <!--
       <div class="sep"></div>
       <div class="muted hide-sm" style="font-size:12px; line-height:1.5">
         เคล็ดลับ: กด <b>⌘/Ctrl + K</b> เพื่อค้นหาหน้าภายในอย่างรวดเร็ว
       </div>
+    -->
     </aside>
 
     <!-- ==== Content Area ==== -->
@@ -66,7 +67,7 @@
               </div>
             </form>
 
-            <p class="muted" id="commitHint" style="margin-top:10px">
+            <p class="muted" id="commitHint" style="margin-top:12px">
               กรอก <b>symbol</b> หรือ <b>filename</b> อย่างน้อย 1 ช่อง แล้วกด <b>Commit</b>
             </p>
 
@@ -80,7 +81,7 @@
               <div>
                 <div class="muted">PE (TTM)</div>
                 <div style="font-size:28px; font-weight:900">—</div>
-                  <i>หมายเหตุ:</i> PE Ratio (Price to Earnings Ratio) เป็นอัตราส่วนที่ใช้วัดมูลค่าหุ้นเทียบกับกำไรสุทธิต่อหุ้น (Earnings Per Share - EPS) ของบริษัทในช่วง 12 เดือนที่ผ่านมา (TTM - Trailing Twelve Months) โดยคำนวณจากการนำราคาหุ้นปัจจุบันมาหารด้วย EPS ในช่วง 12 เดือนที่ผ่านมา 
+                  <!--i>หมายเหตุ:</!--i> PE Ratio (Price to Earnings Ratio) เป็นอัตราส่วนที่ใช้วัดมูลค่าหุ้นเทียบกับกำไรสุทธิต่อหุ้น (Earnings Per Share - EPS) ของบริษัทในช่วง 12 เดือนที่ผ่านมา (TTM - Trailing Twelve Months) โดยคำนวณจากการนำราคาหุ้นปัจจุบันมาหารด้วย EPS ในช่วง 12 เดือนที่ผ่านมา -->
               </div>
               <div>
                 <div class="muted">ROIC</div>
@@ -107,26 +108,65 @@
             <!-- app.js จะเติมการ์ดเอง -->
           </div>
         </div>
-
-        <div class="card" style="margin-top:18px">
-          <h3>ตัวอย่างกราฟ</h3>
-          <!--canvas id="ROE" height="50"></!--canvas-->  <!-- ปรับความตรงนี้ได้เลย-->
-          <div class="chartBox"><canvas id="ROE"></canvas></div>
-          <div class="chartBox"><canvas id="RoA"></canvas></div >
-          <div class="chartBox"><canvas id="PE_Ratio"></canvas></div>
-          <!--canvas id="EPS" height="50"></!--canvas-->
-          <div class="chartBox"><canvas id="EPS"></canvas></div>
-
+        
+        <!--div class="card-row"-->
+        <div class="card" style="margin-top:30px">
+          <h>กราฟรวม (ROE / ROA / PE / PBV / PRICE)</h>
+          <div class="chart-wrap" style="height: 360px">
+            <canvas id="combinedChart"></canvas></div>
+          </div>
         </div>
-      <!--</section-->
-    
+
+        <div class="card" style="margin-top: 18; width: 750px; margin-left: 320px; height: 400px;">
+          <h3>กระแสเงินสดอิสระ (Free Cash Flow - FCF)</h3>
+            <div class="chartBox" style=" width: 700px; height: 400px;">
+              <canvas id="fcfComboChart"></canvas>  
+            </div>
+       
+
+        <div class="card" style="margin-top: 100px; width: 750px; height: 400px;">
+        
+          <h3>อัตราส่วนเงินทุน (Operating Cash Flow to Total Debt - OCF to Debt)</h3>
+            <div class="chart-ocf" style="height: 360px;">
+              <canvas id="ocfComboChart"></canvas>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 100px; width: 1200px; height: 320px; margin-left: -200px;">
+          <section class="kpi-section" style="margin-right: 500px;">
+            <h3>อัตราส่วน KPI</h3>
+            <div id="kpiCards" class="kpi-grid"></div>
+          </section>
+        </div>
+        
+        
+        <!--div class="card-kpi" style="width: 750;">
+          <h3>อัตราส่วน KPI</h3>   
+            <div class="kpi-card" :>
+              <div id="kpiCards" class="kpi-grid"></div>
+            </div>
+        </!--div-->
+        <!--div class="card" style="margin-top:18px">
+          <h3>ตัวอย่างกราฟ</h3>   section data-page="Financial Charts"-->
+          
+          <!--div class="chart-roww" style="margin-top: 20px;">
+            <div class="chartBox"><canvas id="ROE"></canvas></div>        
+            <div class="chartBox"><canvas id="RoA"></canvas></div >
+            <div class="chartBox"><canvas id="PE_Ratio"></canvas></div>
+            <div class="chartBox"><canvas id="PBV_Ratio"></canvas></div>
+            <div class="chartBox"><canvas id="EPS"></canvas></div>
+          </~div>
+        </@div>
+      -</section-->
+        <!--      
         <div class="card" style="margin-top: 20;">
           <h4>Profitability</h4>
-          <canvas id="financialChart" height="100"></canvas>
+          <canvas-- id="financialChart" height="100"></canvas-->
           
           <!--div class="chartBox"><canvas id="RoA"></canvas></!--div-->
-          <div class="chartBox"><canvas id="EBITDA MARGIN"></canvas></div>
-          <div class="chartBox"><canvas id="Net Profit Margin"></canvas></div>
+          <!--
+          <div class="chartBox"><canvas id="EBITDA_MARGIN"></canvas></div>
+          <div class="chartBox"><canvas id="Net_Profit_Margin"></canvas></div>
           <div class="chartBox"><canvas id="GROSS_PROFIT_MARGIN"></canvas></div>
     
         </div>
@@ -152,9 +192,10 @@
             <h4>Leverage Ratios</h4>
             <canvas id="Leverage Ratios" height="100"></canvas>
             
-            <div class="chartBox"><canvas id="Debt to Equity Ratio"></canvas></div>
-            <div class="chartBox"><canvas id="Interest Coverage Ratio"></canvas></div> 
+            <div class="chartBox"><canvas id="Debt_to_Equity_Ratio"></canvas></div>
+            <div class="chartBox"><canvas id="Interest_Coverage_Ratio"></canvas></div> 
           </div>
+        -->
       </section>
      
 </body>

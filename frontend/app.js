@@ -44,7 +44,7 @@ const state = {
       const data = await res.json();
       console.log("API data:", data);
   
-      setStatus("ดึงข้อมูลสำเร็จ ✅", "success");
+      setStatus("ดึงข้อมูลสำเร็จ ", "success");
       renderAll(data);
     } catch (err) {
       console.error(err);
@@ -73,17 +73,23 @@ const state = {
       setStatus("มี result แต่เป็นค่าว่าง", "error");
       return;
     }
-  
+
     // 1) โชว์ตาราง result.json ให้เห็นชัด ๆ (แทนงบดิบ)
-    renderResultTable(rows);
-  
+    
+    //renderResultTable(rows);
+    plotCombined5(rows);     // Combined 5 Chart PE PBV ROE RoA Price EPS
+    plotFCFCombo(rows);     // Free Cash Flow Combo Chart
+    plotOCFCombo(rows);
+    renderKpiCards(rows);
+
+    
     // 2) ส่ง ratios ให้แท็บอัตราส่วนใช้ได้
     const ratios = data.ratios || rowsToRatios(rows);
     renderRatioSection({ ratios });
-  
+
     // 3) ทำกราฟหลัก 3-4 ช่อง จาก key ที่มีจริงใน result.json
     const years = rows.map(r => String(r.Year ?? r["Year"] ?? ""));
-  
+
     const keys = pickNumericKeys(rows);
     if (!keys.length){
       setStatus("result.json ไม่มีตัวเลขให้ทำกราฟเลย (มีแต่ข้อความ?)", "error");
@@ -96,17 +102,22 @@ const state = {
     });
 
     // เอา 4 ตัวแรกไปลงกราฟ (เอาตามที่มีจริง)
-    const kROE = keys[0], kROA = keys[1] || keys[0], kEBITDA_MARGIN = keys[2] || keys[0], kNET_PROFIT_MATGIN = keys[3] || keys[0],
-          kGROSS_PROFIT_MARGIN = keys[4] || keys[0], kOperating_profit_margin = keys[5] || keys[0], kWACC = keys[6] || keys[0], kCost_of_equity = keys[7] || keys[0],
-          kUnlevered_free_cash_flow_UFCF = keys[8] || keys[0], kOperating_cash_flow_OCF= keys[9] || keys[0], kFree_cash_flow_FCF= keys[10]|| keys[0], kCurrent_Ratio= keys[11]|| keys[0],
-          kCash_ratio= keys[12]|| keys[0], kEPS= keys[13]|| keys[0], kPE_RATIO= keys[14]|| keys[0], kOwners_Earnings= keys[15]|| keys[0];
-  
+    const kROE = keys[0], kROA = keys[1] || keys[0], kEBITDA_MARGIN = keys[2] || keys[0], kNET_PROFIT_MATGIN = keys[3] || keys[0], 
+          kGROSS_PROFIT_MARGIN = keys[4] || keys[0], kOperating_profit_margin = keys[5] || keys[0], kWACC = keys[6] || keys[0], 
+          kCost_of_equity = keys[7] || keys[0],kUnlevered_free_cash_flow_UFCF = keys[8] || keys[0], kOperating_cash_flow_OCF= keys[9] || keys[0], 
+          kFree_cash_flow_FCF= keys[10]|| keys[0], kCurrent_Ratio= keys[11]|| keys[0], kCash_ratio= keys[12]|| keys[0], kEPS= keys[13]|| keys[0], 
+          kPE_RATIO= keys[14]|| keys[0], kOwners_Earnings= keys[15]|| keys[0], kPBV_Ratio= keys[16]|| keys[0],kROIC = keys[17] || keys[0], 
+          kPRICE = keys[18] || keys[0];
+
     setupOrUpdateLine("ROE", years, s(kROE), kROE);
     setupOrUpdateLine("RoA", years, s(kROA), kROA);
+    setupOrUpdateLine("ROIC", years, s(kROIC), kROIC);
+    setupOrUpdateLine("PRICE", years, s(kPRICE), kPRICE);
     setupOrUpdateBar("EBITDA MARGIN", years, s(kEBITDA_MARGIN), kEBITDA_MARGIN);
     setupOrUpdateBar("Net Profit Margin", years, s(kNET_PROFIT_MATGIN), kNET_PROFIT_MATGIN);
     setupOrUpdateChart("GROSS_PROFIT_MARGIN", "line", years, s(kGROSS_PROFIT_MARGIN), kGROSS_PROFIT_MARGIN);
     setupOrUpdateLine("PE_Ratio", years, s(kPE_RATIO), kPE_RATIO,);
+    setupOrUpdateLine("PBV_Ratio", "line", years, s(kPBV_Ratio), kPBV_Ratio);
     setupOrUpdateChart("GROSS_PROFIT_MARGIN", "line",  years, s(kGROSS_PROFIT_MARGIN), kGROSS_PROFIT_MARGIN);
     setupOrUpdateBar("Operating_profit_margin", years, s(kOperating_profit_margin), kOperating_profit_margin);
     setupOrUpdateBar("Owners_Earnings", years, s(kOwners_Earnings), kOwners_Earnings);
@@ -118,8 +129,560 @@ const state = {
     setupOrUpdateBar("WACC", years, s(kWACC), kWACC);
     setupOrUpdateBar("Cost_of_equity", years, s(kCost_of_equity), kCost_of_equity);
     setupOrUpdateChart("EPS", "line", years, s(kEPS), kEPS);
+    setupOrUpdateLine("PBV_Ratio", years, s(kPBV_Ratio), kPBV_Ratio);
+   
+
+  }
+
+  // เพิ่มมา
+  function plotCombined5(rows) {
+    if (!rows?.length || !window.Chart) return;
+
+    const sorted = [...rows].sort((a, b) => {
+      const ya = String(a.Year ?? a["Year"] ?? "");
+      const yb = String(b.Year ?? b["Year"] ?? "");
+      const na = Number(ya), nb = Number(yb);
+      if (Number.isFinite(na) && Number.isFinite(nb)) return na - nb;
+      return ya.localeCompare(yb);
+    });
+
+    const years = sorted.map((r) => String(r.Year ?? r["Year"] ?? ""));
+
+    const normalizeKey = (k) => String(k).toLowerCase().replace(/[^a-z0-9]+/g, "");
+    const toNum = (v) => {
+      const n = Number(v);
+      return Number.isFinite(n) ? n : null;
+    };
+
+    const findKey = (candidateKeys) => {
+      const keys = Object.keys(sorted[0] || {});
+      const normMap = new Map(keys.map((k) => [normalizeKey(k), k]));
+      for (const c of candidateKeys) if (keys.includes(c)) return c;
+      for (const c of candidateKeys) {
+        const hit = normMap.get(normalizeKey(c));
+        if (hit) return hit;
+      }
+      return null;
+    };
+
+    const series = (key) => sorted.map((r) => toNum(r[key]));
+
+    // ==== ปรับ candidate ให้ตรงกับ key ใน result.json ของคุณได้ ====
+    const kROE = findKey(["ROE", "roe", "Return on Equity", "return_on_equity"]);
+    const kROA = findKey(["ROA", "RoA", "roa", "Return on Assets", "return_on_assets"]);
+    const kPE = findKey(["PE_RATIO", "PE_Ratio", "pe", "pe_ratio", "P/E", "peratio"]);
+    const kPBV = findKey(["PBV_Ratio", "pbv", "pbv_ratio", "P/BV", "price_to_book"]);
+    const kROIC = findKey(["ROIC", "roic", "Return on Invested Capital", "return_on_invested_capital"]);
+    const kPRICE = findKey(["Price", "price", "Close", "close", "Last", "last", "StockPrice", "stock_price"]);
+    
+    const datasets = [];
+    const COLORS = {
+      roe: "#2563EB",   // blue
+      roa: "#7C3AED",   // violet
+      pe: "#F59E0B",    // amber
+      pbv: "#EF4444",   // red
+      roic: "#D946EF",  // pink
+      price: "#10B981", // green
+     
+    };
+
+    if (kROE)
+      datasets.push({
+        label: "ROE (%)",
+        data: series(kROE),
+        yAxisID: "yPct",
+        borderColor: COLORS.roe,
+        borderWidth: 5,
+        backgroundColor: COLORS.roe,
+        tension: 0.25,
+        pointRadius: 2,
+      });
+
+    if (kROA)
+      datasets.push({
+        label: "RoA (%)",
+        data: series(kROA),
+        yAxisID: "yPct",
+        borderColor: COLORS.roa,
+        borderWidth: 5,
+        backgroundColor: COLORS.roa,
+        tension: 0.25,
+        pointRadius: 2,
+      });
+
+    if (kPE)
+      datasets.push({
+        label: "P/E",
+        data: series(kPE),
+        yAxisID: "yRight",
+        borderColor: COLORS.pe,
+        borderWidth: 5,
+        backgroundColor: COLORS.pe,
+        tension: 0.25,
+        pointRadius: 2,
+      });
+
+    if (kPBV)
+      datasets.push({
+        label: "P/BV",
+        data: series(kPBV),
+        yAxisID: "yRight",
+        borderColor: COLORS.pbv,
+        borderWidth: 5,
+        backgroundColor: COLORS.pbv,
+        tension: 0.25,
+        pointRadius: 2,
+      });
+
+    if (kROIC)
+      datasets.push({
+        label: "ROIC (%",
+        data: series(kROIC),
+        yAxisID: "yRight",
+        borderColor: COLORS.roic,
+        borderWidth: 5,
+        backgroundColor: COLORS.roic,
+        tension: 0.25,
+        pointRadius: 2,
+      });
+
+    if (kPRICE)
+      datasets.push({
+        label: "Price",
+        data: series(kPRICE),
+        yAxisID: "yRight",
+        borderColor: COLORS.price,
+        borderWidth: 5,
+        backgroundColor: COLORS.price,
+        tension: 0.25,
+        pointRadius: 2,
+      });
+    
+    const canvas = document.getElementById("combinedChart");
+    if (!canvas) return;
+
+    // destroy กันซ้อน
+    if (state?.charts?.combinedChart) state.charts.combinedChart.destroy();
+
+    state.charts.combinedChart = new Chart(canvas.getContext("2d"), {
+      type: "line",
+      data: { labels: years, datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: "index", intersect: false },
+        plugins: {
+          legend: { display: true },
+          tooltip: { enabled: true },
+        },
+        scales: {
+          yPct: {
+            type: "linear",
+            position: "left",
+            title: { display: true, text: "Percent (%)" },
+          },
+          yRight: {
+            type: "linear",
+            position: "right",
+            grid: { drawOnChartArea: false },
+            title: { display: true, text: "PE / PBV / Price" },
+          },
+          x: { ticks: { autoSkip: true, maxTicksLimit: 12 } },
+        },
+        elements: {
+          line: { borderWidth: 2 },
+          point: { hoverRadius: 5 },
+        },
+      },
+    });
   }
   
+  //  
+  function plotFCFCombo(rows) {
+    if (!rows?.length || !window.Chart) return;
+  
+    const sorted = [...rows].sort((a, b) => {
+      const ya = String(a.Year ?? a["Year"] ?? "");
+      const yb = String(b.Year ?? b["Year"] ?? "");
+      const na = Number(ya), nb = Number(yb);
+      if (Number.isFinite(na) && Number.isFinite(nb)) return na - nb;
+      return ya.localeCompare(yb);
+    });
+  
+    const years = sorted.map(r => String(r.Year ?? r["Year"] ?? ""));
+  
+    const normalize = (k) => String(k).toLowerCase().replace(/[^a-z0-9]+/g, "");
+    const toNum = (v) => {
+      const n = Number(v);
+      return Number.isFinite(n) ? n : null;
+    };
+  
+    const findKey = (candidates) => {
+      const keys = Object.keys(sorted[0] || {});
+      const map = new Map(keys.map(k => [normalize(k), k]));
+      for (const c of candidates) if (keys.includes(c)) return c;
+      for (const c of candidates) {
+        const hit = map.get(normalize(c));
+        if (hit) return hit;
+      }
+      return null;
+    };
+  
+    // ---- หา key ให้เจอใน result.json ----
+    const kFCF = findKey([
+      "Free_cash_flow_FCF",
+      "Free Cash Flow (FCF)",
+      "Free Cash Flow",
+      "FCF",
+      "free_cash_flow",
+      "freecashflow"
+    ]);
+  
+    if (!kFCF) {
+      console.warn("ไม่เจอคีย์ FCF ใน result.json");
+      return;
+    }
+  
+    const fcf = sorted.map(r => toNum(r[kFCF]));
+  
+    // ---- Line: Growth % (YoY) ----
+    const growthPct = fcf.map((v, i) => {
+      if (i === 0) return null;
+      const prev = fcf[i - 1];
+      if (!Number.isFinite(v) || !Number.isFinite(prev) || prev === 0) return null;
+      return ((v - prev) / Math.abs(prev)) * 100;
+    });
+  
+    const canvas = document.getElementById("fcfComboChart");
+    if (!canvas) return;
+  
+    // กันกราฟซ้อน
+    if (state?.charts?.fcfComboChart) state.charts.fcfComboChart.destroy();
+    
+    //function cleanNegZero(x) {
+    //  return (typeof x === "number" && Object.is(x, -0)) ? 0 : x;
+    //}
+    
+    state.charts.fcfComboChart = new Chart(canvas.getContext("2d"), {
+      data: {
+        labels: years,
+        datasets: [
+          {
+            type: "bar",
+            label: "Free Cash Flow (FCF)",
+            data: fcf,
+            yAxisID: "yCash",
+            borderRadius: 6
+          },
+          {
+            type: "line",
+            label: "FCF Growth (%)",
+            data: growthPct, //.map(v => (v == null ? null : cleanNegZero(v))),
+            yAxisID: "yPct",
+            tension: 0.25,
+            pointRadius: 3,
+           /* 
+            // สี “จุด” เปลี่ยนตามค่าบวก/ลบ
+            pointBackgroundColor: (ctx) => {
+              const v = ctx.raw;
+              if (v == null) return "rgba(255, 255, 255, .35";
+              return v < 0 ? "#EF4444" : "#10B981"; // แดง / ชมพู
+            },
+            pointBorderColor: (ctx) => {
+              const v = ctx.raw;
+              if (v == null) return "rgba(255, 255, 255, .35";
+              return v < 0 ? "#EF4444" : "#10B981"; // แดง / เขียว
+            },
+            //สี “เส้น” เปลี่ยนตาม segment (ช่วงเส้น) ตามค่าบวก/ลบ
+            segment: {
+              borderColor: (ctx) => {
+                const y0 = ctx.p0.parsed.y;
+                const y1 = ctx.p1.parsed.y;
+                // ถ้าช่วงเวลานี้มีค่าติดลบ ไห้เป็นแดง
+                return (y0 < 0 || y1 < 0) ? "#EF4444" : "#10B981";
+              }
+            },
+            borderColor: 3,
+            */
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: "index", intersect: false },
+        plugins: {
+          legend: { display: true },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => {
+                const v = ctx.raw;
+                if (v == null) return `${ctx.dataset.label}: —`;
+                if (ctx.dataset.yAxisID === "yPct") return `${ctx.dataset.label}: ${v.toFixed(2)}%`;
+                // format เงิน
+                const abs = Math.abs(v);
+                if (abs >= 1e9) return `${ctx.dataset.label}: ${(v/1e9).toFixed(2)} B`;
+                if (abs >= 1e6) return `${ctx.dataset.label}: ${(v/1e6).toFixed(2)} M`;
+                return `${ctx.dataset.label}: ${Number(v).toLocaleString()}`;
+              }
+            }
+          }
+        },
+        scales: {
+          yCash: {
+            type: "linear",
+            position: "left",
+            title: { display: true, text: "Cash (FCF)" }
+          },
+          yPct: {
+            type: "linear",
+            position: "right",
+            grid: { drawOnChartArea: false },
+            title: { display: true, text: "Growth (%)" }
+          },
+          x: { ticks: { autoSkip: true, maxTicksLimit: 12 } }
+        }
+      }
+    });
+  }
+  
+  function plotOCFCombo(rows) {
+    if (!rows?.length || !window.Chart) return;
+  
+    const sorted = [...rows].sort((a, b) => {
+      const ya = String(a.Year ?? a["Year"] ?? "");
+      const yb = String(b.Year ?? b["Year"] ?? "");
+      const na = Number(ya), nb = Number(yb);
+      if (Number.isFinite(na) && Number.isFinite(nb)) return na - nb;
+      return ya.localeCompare(yb);
+    });
+  
+    const years = sorted.map(r => String(r.Year ?? r["Year"] ?? ""));
+  
+    const normalize = (k) => String(k).toLowerCase().replace(/[^a-z0-9]+/g, "");
+    const toNum = (v) => {
+      const n = Number(v);
+      return Number.isFinite(n) ? n : null;
+    };
+  
+    const findKey = (candidates) => {
+      const keys = Object.keys(sorted[0] || {});
+      const map = new Map(keys.map(k => [normalize(k), k]));
+      for (const c of candidates) if (keys.includes(c)) return c;
+      for (const c of candidates) {
+        const hit = map.get(normalize(c));
+        if (hit) return hit;
+      }
+      return null;
+    };
+  
+    // ✅ หา key OCF ให้เจอใน result.json
+    const kOCF = findKey([
+      "Operating_cash_flow_OCF",
+      "Operating Cash Flow (OCF)",
+      "Operating Cash Flow",
+      "OCF",
+      "operating_cash_flow",
+      "operatingcashflow"
+    ]);
+  
+    if (!kOCF) {
+      console.warn("ไม่เจอคีย์ OCF ใน result.json");
+      return;
+    }
+  
+    const ocf = sorted.map(r => toNum(r[kOCF]));
+  
+    // ✅ Growth % (YoY)
+    const growthPct = ocf.map((v, i) => {
+      if (i === 0) return null;
+      const prev = ocf[i - 1];
+      if (!Number.isFinite(v) || !Number.isFinite(prev) || prev === 0) return null;
+      const g = ((v - prev) / Math.abs(prev)) * 100;
+      return Object.is(g, -0) ? 0 : g; // กัน -0
+    });
+  
+    const canvas = document.getElementById("ocfComboChart");
+    if (!canvas) return;
+  
+    // กันกราฟซ้อน
+    if (state?.charts?.ocfComboChart) state.charts.ocfComboChart.destroy();
+  
+    state.charts.ocfComboChart = new Chart(canvas.getContext("2d"), {
+      type: "bar",
+      data: {
+        labels: years,
+        datasets: [
+          {
+            type: "bar",
+            label: "Operating Cash Flow (OCF)",
+            data: ocf,
+            yAxisID: "yCash",
+            borderRadius: 6,
+            barPercentage: 0.7,
+            categoryPercentage: 0.7,
+          },
+          {
+            type: "line",
+            label: "OCF Growth (%)",
+            data: growthPct,
+            yAxisID: "yPct",
+            tension: 0.25,
+            pointRadius: 3,
+            borderWidth: 3,
+  
+            // จุดแดงเมื่อค่าติดลบ
+            pointBackgroundColor: (ctx) => {
+              const v = ctx.raw;
+              if (v == null) return "rgba(255,255,255,.35)";
+              return v < 0 ? "#EF4444" : "#10B981";
+            },
+            pointBorderColor: (ctx) => {
+              const v = ctx.raw;
+              if (v == null) return "rgba(255,255,255,.35)";
+              return v < 0 ? "#EF4444" : "#10B981";
+            },
+  
+            // เส้นแดงเมื่อช่วงนั้นติดลบ
+            segment: {
+              borderColor: (ctx) => {
+                const y0 = ctx.p0.parsed.y;
+                const y1 = ctx.p1.parsed.y;
+                return (y0 < 0 || y1 < 0) ? "#EF4444" : "#10B981";
+              }
+            }
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: "index", intersect: false },
+        plugins: {
+          legend: { display: true },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => {
+                let v = ctx.raw;
+                if (v == null) return `${ctx.dataset.label}: —`;
+                if (typeof v === "number" && Object.is(v, -0)) v = 0;
+  
+                if (ctx.dataset.yAxisID === "yPct") return `${ctx.dataset.label}: ${v.toFixed(2)}%`;
+  
+                const abs = Math.abs(v);
+                if (abs >= 1e9) return `${ctx.dataset.label}: ${(v/1e9).toFixed(2)} B`;
+                if (abs >= 1e6) return `${ctx.dataset.label}: ${(v/1e6).toFixed(2)} M`;
+                return `${ctx.dataset.label}: ${Number(v).toLocaleString()}`;
+              }
+            }
+          }
+        },
+        scales: {
+          yCash: {
+            type: "linear",
+            position: "left",
+            title: { display: true, text: "Cash (OCF)" },
+            beginAtZero: false
+          },
+          yPct: {
+            type: "linear",
+            position: "right",
+            grid: { drawOnChartArea: false },
+            title: { display: true, text: "Growth (%)" },
+            ticks: { callback: (v) => `${v}%` }
+          },
+          x: { ticks: { autoSkip: true, maxTicksLimit: 12 } }
+        }
+      }
+    });
+  }
+      // ================== render KPI cards ================== (ROW)
+  function renderKpiCards(rows){
+  const el = document.getElementById("kpiCards");
+  if (!el || !rows?.length) return;
+
+  const sorted = [...rows].sort((a,b) => Number(a.Year ?? a["Year"]) - Number(b.Year ?? b["Year"]));
+  const last = sorted[sorted.length - 1];
+  const prev = sorted.length > 1 ? sorted[sorted.length - 2] : null;
+
+  const toNum = (v) => {
+    const n = Number(v);
+    return Number.isFinite(n) ? n : null;
+  };
+
+  const fmt = (key, v) => {
+    const n = toNum(v);
+    if (n == null) return "—";
+    if (/margin|roe|roa|roic/i.test(key)) return n.toFixed(2) + "%";
+    if (/wacc|cost of equity|cost_of_equity|coe/i.test(key)) return (n * 100).toFixed(2) + "%";
+    return n.toLocaleString();
+  };
+
+  const KPIS = [
+    { key: "EBITDA Margin", label: "EBITDA MARGIN" },
+    { key: "Net Profit Margin", label: "NET PROFIT MARGIN" },
+    { key: "Gross Profit MArgin", label: "GROSS PROFIT MARGIN" },
+    { key: "Operating Profit Margin", label: "OPERATING PROFIT MARGIN" },
+    { key: "WACC", label: "WACC" },
+  ];
+
+  const lowerIsBetter = new Set(["WACC"]);
+  el.innerHTML = "";
+
+  KPIS.forEach((kpi, idx) => {
+    const cur = toNum(last?.[kpi.key]);
+    const tar = toNum(prev?.[kpi.key]);
+    const pct = (cur != null && tar != null && tar !== 0) ? (cur / tar) * 100 : null;
+
+    const clamp = (x,a,b) => Math.max(a, Math.min(b, x));
+    const fillPct = pct == null ? 0 : clamp(pct, 0, 150);
+
+    let good = false;
+    if (pct != null) {
+      const invert = lowerIsBetter.has(kpi.key);
+      good = invert ? (cur <= tar) : (cur >= tar);
+    }
+
+    const badgeText = pct == null ? "No Target" : `${pct.toFixed(2)}% of target`;
+
+    const card = document.createElement("div");
+    card.className = "kpi-card " + (pct == null ? "" : (good ? "kpi-good" : "kpi-bad"));
+   
+    card.innerHTML = `
+      <div class="kpi-top">
+        <div>
+          <p class="kpi-title">Tab ${idx + 1}</p>
+          <div class="kpi-name">${kpi.label}</div>
+        </div>
+        <div class="kpi-badge">${badgeText}</div>
+      </div>
+
+      <div class="kpi-metrics">
+        <div class="kpi-metric">
+          <div class="label">KPI VALUE (${last?.Year ?? last?.["Year"] ?? "-"})</div>
+          <div class="value">${fmt(kpi.key, cur)}</div>
+        </div>
+        <div class="kpi-metric">
+          <div class="label">TARGET (${prev?.Year ?? prev?.["Year"] ?? "-"})</div>
+          <div class="value">${fmt(kpi.key, tar)}</div>
+        </div>
+      </div>
+
+      <div class="kpi-progress">
+        <div class="kpi-bar">
+          <div class="kpi-fill" style="width:${fillPct}%"></div>
+          <div class="kpi-marker" style="left:100%"></div>
+        </div>
+        <div class="kpi-scale">
+          <span>0%</span><span>50%</span><span>100%</span><span>150%</span>
+        </div>
+      </div>
+    `;
+
+    el.appendChild(card);
+  });
+}
+  // ================== แปลง rows เป็น ratios ==================
   function rowsToRatios(rows){
     const out = {};
     rows.forEach(r => {
@@ -156,7 +719,7 @@ const state = {
     const ignore = new Set(["Stock Symbol","Symbol","symbol"]);
     const allKeys = Object.keys(rows[0] || {}).filter(k => !ignore.has(k));
   
-    // เอา Year + 8 ตัวแรกพอ อ่านง่าย (ปรับได้)
+    // เอา Year + 16 ตัวแรกพอ อ่านง่าย (ปรับได้)
     const cols = ["Year", ...allKeys.filter(k => k !== "Year").slice(0, 16)];
   
     const table = document.createElement("table");
@@ -177,7 +740,7 @@ const state = {
     card.appendChild(table);
     cards.appendChild(card);
   }
-  
+ 
   // ================== render หลัก ==================
   
   function renderAll(data) {
@@ -460,4 +1023,4 @@ const state = {
       chart.update();
     }
   }
-  
+    

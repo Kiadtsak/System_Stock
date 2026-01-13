@@ -21,21 +21,15 @@ def calculate_ratios_by_year(income_data, balance_data, cashflow_data, basic_inf
             model = CashFlowModel(income, balance, cashflow)
 
             results[year] = {
-               # "Gross Profit Margin": profitability.gross_profit_margin(income),
-                # "Operating Profit Margin": profitability.operation_profit_margin(income),
-               # "Net Profit Margin": profitability.net_profit_margin(income),
-               # "RoA": profitability.roa(income, balance),
-               # "ROE": profitability.roe(income, balance),
-               # "EBITDA Margin": profitability.ebitda_margin(income),
                 # Profitability Ratios
                 "ROE": model.ROE(),
                 "RoA": model.ROA(),
+                "ROIC": model.ROIC(),
                 "EBITDA Margin": model.ebitda_margin(),
                 "Net Profit Margin": model.net_profit_margin(),
                 "Gross Profit MArgin": model.gross_profit_margin(),
                 "Operating Profit Margin": model.operation_profit_margin(),
                              
-
                 # Cash Flow Ratios
                 #"Cost of Equity": model.cost_of_eqiuty(),
                 
@@ -91,7 +85,7 @@ def calculate_ratios_by_year(income_data, balance_data, cashflow_data, basic_inf
                 "EPS": model.EPS_Ratio(),
                 "PE Ratio": model.PE_Ratio(),
                 "Owner's Earnings": model.Owners_Earnings(),
-                #"PBV Ratio": model.PB_Ratio(),
+                "PBV Ratio": model.PBV_Ratio(),
                 #"EPS_Ratio": valuation.eps_ratio(income),
                 #"Owner Earnings": valuation.owner_earnings(income, cashflow),
                # "EPS": valuation.eps_ratio(income),

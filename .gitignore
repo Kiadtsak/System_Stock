@@ -10,6 +10,8 @@ services/gemina_ai
 services/get_api
 services/load_stock_financials_statements
 errors.log
+frontend/ฟ
+frontend/page
 __pycache__/
 *.pyc
 
