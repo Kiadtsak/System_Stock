@@ -3,200 +3,283 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="style.css" />
-  <title>Financials Visualization Dashboard</title>
+  <title>Stock Analysis Dashboard</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <link rel="stylesheet" href="style.css"/>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="./app.js" defer></script>
 </head>
+
 <body>
   <div class="app">
-    <!-- ==== Sidebar ==== -->
-    <aside class="sidebar">
+    <!-- Topbar -->
+    <header class="topbar">
       <div class="brand">
-        <div class="logo" aria-hidden>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-            <path d="M3 12h18M12 3v18" stroke="#0b1020" stroke-width="2.5" stroke-linecap="round"/>
-          </svg>
+        <div class="logoMark">▮▮▮</div>
+        <div class="brandText">
+          <div class="title">Stock Analysis Dashboard</div>
+          <div class="sub">Quick Insight + Financial Trends</div>
         </div>
-        <h1>Financials Dashboard <span>Pro Visual & Analytics</span></h1>
       </div>
-      <!--
-      <nav class="nav" id="nav">
-         Buttons injected by JS 
-      </nav>  -->
-      <!--
-      <div class="sep"></div>
-      <div class="muted hide-sm" style="font-size:12px; line-height:1.5">
-        เคล็ดลับ: กด <b>⌘/Ctrl + K</b> เพื่อค้นหาหน้าภายในอย่างรวดเร็ว
+
+      <div class="topActions">
+        <div class="iconBtn" id="themeToggle" title="Toggle Theme">🌙</div>
+        <div class="iconBtn" title="Notifications">🔔</div>
+        <div class="iconBtn" title="Settings">⚙️</div>
+        <div class="iconBtn" title="Menu">☰</div>
+
       </div>
-    -->
-    </aside>
+    </header>
 
-    <!-- ==== Content Area ==== -->
-    <main class="content">
-
-      <!-- ===== Sections ===== -->
-      <section data-page="Home">
-        <div class="topbar">
-          <h2 class="title">
-            Financials Visualization Dashboard
-            <small>ยินดีต้อนรับสู่การวิเคราะห์ทางการเงิน</small>
-          </h2>
-          <span class="tag">⚡ Performance Optimized</span>
-        </div>
-
-        <div class="grid cols-2">
-          <div class="card">
-            <h3>เริ่มต้น</h3>
-
-            <!-- ★★ ใช้ form id="queryForm" ให้ตรงกับ app.js -->
-            <form id="queryForm">
-              <div class="field" style="margin-bottom:10px">
-                <input class="input" id="symbolInput" placeholder="เช่น NVDA, AAPL" />
-                <!-- ปุ่มเป็น type="submit" ให้ form ทำงาน -->
-                <button class="btn" id="commitBtn" type="submit">Commit</button>
-              </div>
-
-              <!-- ★★ ช่อง filename ให้ตรงกับ fileInput ใน app.js -->
-              <div class="field">
-                <input class="input" id="fileInput" placeholder="หรือใส่ชื่อไฟล์ในเซิร์ฟเวอร์ เช่น NVDA_financials.json (ไม่บังคับ)" />
-              </div>
-            </form>
-
-            <p class="muted" id="commitHint" style="margin-top:12px">
-              กรอก <b>symbol</b> หรือ <b>filename</b> อย่างน้อย 1 ช่อง แล้วกด <b>Commit</b>
-            </p>
-
-            <!-- ★★ status สำหรับ toast + loading -->
-            <div id="status"></div>
+    <main class="main">
+      <!-- Hero / Quick Insight -->
+      <section class="hero card">
+        <div class="heroHead">
+          <div class="heroLeft">
+            <h2>Quick Insight</h2>
+            <p class="muted">Summary generated based on key financial metrics and trends.</p>
+            <div class="metaRow">
+              <span class="pill">Source: <b id="sourceInfo">—</b></span>
+              <span class="pill">Status: <b id="statusText">Ready</b></span>
+            </div>
           </div>
 
-          <div class="card">
-            <h3>สรุปภาพรวม</h3>
-            <div class="grid cols-3">
+          <form id="queryForm" class="searchBar">
+            <input id="symbolInput" type="text" placeholder="Enter stock symbol..." autocomplete="off" />
+            <input id="fileInput" type="text" placeholder="or filename (optional)..." autocomplete="off" />
+            <button class="btn" type="submit">Search</button>
+          </form>
+        </div>
+
+        <!-- status toast -->
+        <div id="status" class="statusArea"></div>
+
+        <!-- Quality / Insight cards -->
+        <div class="qualityBlock">
+          <div class="qualityTitle">
+            <span class="dot ok"></span>
+            <h3>Quality</h3>
+          </div>
+
+          <div class="insightGrid">
+            <div class="insightCard">
+              <div class="icn red">📉</div>
               <div>
-                <div class="muted">PE (TTM)</div>
-                <div style="font-size:28px; font-weight:900">—</div>
-                  <!--i>หมายเหตุ:</!--i> PE Ratio (Price to Earnings Ratio) เป็นอัตราส่วนที่ใช้วัดมูลค่าหุ้นเทียบกับกำไรสุทธิต่อหุ้น (Earnings Per Share - EPS) ของบริษัทในช่วง 12 เดือนที่ผ่านมา (TTM - Trailing Twelve Months) โดยคำนวณจากการนำราคาหุ้นปัจจุบันมาหารด้วย EPS ในช่วง 12 เดือนที่ผ่านมา -->
+                <div class="iTitle">Declining</div>
+                <div class="iSub">ROE & Margins</div>
               </div>
+            </div>
+
+            <div class="insightCard">
+              <div class="icn amber">💰</div>
               <div>
-                <div class="muted">ROIC</div>
-                <div style="font-size:28px; font-weight:900">—</div>
+                <div class="iTitle">Cash Flow</div>
+                <div class="iSub">Negative FCF Growth</div>
               </div>
+            </div>
+
+            <div class="insightCard">
+              <div class="icn pink">⚠️</div>
               <div>
-                <div class="muted">Cash Ratio</div>
-                <div style="font-size:28px; font-weight:900">—</div>
+                <div class="iTitle">Risk</div>
+                <div class="iSub">High Debt Levels</div>
+              </div>
+            </div>
+
+            <div class="insightCard danger">
+              <div class="icn danger">🧾</div>
+              <div>
+                <div class="iTitle">Verdict</div>
+                <div class="iSub">Not Attractive at Current Price</div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- ★★ แสดง source_file ที่มาของข้อมูล -->
-        <div class="card" style="margin-top:20px">
-          <h3>แหล่งข้อมูลที่ใช้ล่าสุด</h3>
-          <p class="muted">ไฟล์: <span id="sourceInfo">—</span></p>
+          <div class="qualityFoot muted">Summary generated based on key financial metrics and trends.</div>
         </div>
-
-        <!-- ★★ พื้นที่ให้ app.js สร้างการ์ดผลลัพธ์ -->
-        <div class="card" style="margin-top:18px">
-          <h3>ผลลัพธ์จาก API</h3>
-          <div id="cards" class="grid cols-2">
-            <!-- app.js จะเติมการ์ดเอง -->
-          </div>
-        </div>
-        
-        <!--div class="card-row"-->
-        <div class="card" style="margin-top:30px">
-          <h>กราฟรวม (ROE / ROA / PE / PBV / PRICE)</h>
-          <div class="chart-wrap" style="height: 360px">
-            <canvas id="combinedChart"></canvas></div>
-          </div>
-        </div>
-
-        <div class="card" style="margin-top: 18; width: 750px; margin-left: 320px; height: 400px;">
-          <h3>กระแสเงินสดอิสระ (Free Cash Flow - FCF)</h3>
-            <div class="chartBox" style=" width: 700px; height: 400px;">
-              <canvas id="fcfComboChart"></canvas>  
-            </div>
-       
-
-        <div class="card" style="margin-top: 100px; width: 750px; height: 400px;">
-        
-          <h3>อัตราส่วนเงินทุน (Operating Cash Flow to Total Debt - OCF to Debt)</h3>
-            <div class="chart-ocf" style="height: 360px;">
-              <canvas id="ocfComboChart"></canvas>
-            </div>
-        </div>
-
-        <div class="card" style="margin-top: 100px; width: 1200px; height: 320px; margin-left: -200px;">
-          <section class="kpi-section" style="margin-right: 500px;">
-            <h3>อัตราส่วน KPI</h3>
-            <div id="kpiCards" class="kpi-grid"></div>
-          </section>
-        </div>
-        
-        
-        <!--div class="card-kpi" style="width: 750;">
-          <h3>อัตราส่วน KPI</h3>   
-            <div class="kpi-card" :>
-              <div id="kpiCards" class="kpi-grid"></div>
-            </div>
-        </!--div-->
-        <!--div class="card" style="margin-top:18px">
-          <h3>ตัวอย่างกราฟ</h3>   section data-page="Financial Charts"-->
-          
-          <!--div class="chart-roww" style="margin-top: 20px;">
-            <div class="chartBox"><canvas id="ROE"></canvas></div>        
-            <div class="chartBox"><canvas id="RoA"></canvas></div >
-            <div class="chartBox"><canvas id="PE_Ratio"></canvas></div>
-            <div class="chartBox"><canvas id="PBV_Ratio"></canvas></div>
-            <div class="chartBox"><canvas id="EPS"></canvas></div>
-          </~div>
-        </@div>
-      -</section-->
-        <!--      
-        <div class="card" style="margin-top: 20;">
-          <h4>Profitability</h4>
-          <canvas-- id="financialChart" height="100"></canvas-->
-          
-          <!--div class="chartBox"><canvas id="RoA"></canvas></!--div-->
-          <!--
-          <div class="chartBox"><canvas id="EBITDA_MARGIN"></canvas></div>
-          <div class="chartBox"><canvas id="Net_Profit_Margin"></canvas></div>
-          <div class="chartBox"><canvas id="GROSS_PROFIT_MARGIN"></canvas></div>
-    
-        </div>
-
-        <div class="card" style="margin-top:20px;">
-          <h4>Financials</h4>
-          <canvas id="Capital cost" height="100"></canvas>
-          
-          <div class="chartBox"><canvas id="WACC"></canvas></div>
-          <div class="chartBox"><canvas id="Cost_of_equity"></canvas></div> 
-        </div>
-
-        <div class="chart-roww">
-          <div class="card" style="margin-top:20px;">
-            <h4>Liquidity Ratios</h4>
-            <canvas id="Liquidity Ratios" height="100"></canvas>
-            
-            <div class="chartBox"><canvas id="Current_Ratio"></canvas></div>
-            <div class="chartBox"><canvas id="Cash_ratio"></canvas></div>
-          </div>
-
-          <div class="card" style="margin-top:20px;">
-            <h4>Leverage Ratios</h4>
-            <canvas id="Leverage Ratios" height="100"></canvas>
-            
-            <div class="chartBox"><canvas id="Debt_to_Equity_Ratio"></canvas></div>
-            <div class="chartBox"><canvas id="Interest_Coverage_Ratio"></canvas></div> 
-          </div>
-        -->
       </section>
-     
+
+      <!-- KPI Row (การ์ดที่ app.js จะ render ใส่ #kpiCards) -->
+      <section class="kpiWrap card">
+        <div class="sectionHead">
+          <h3>Key Performance Indicators</h3>
+          <div class="rightHint muted">auto from result.json</div>
+        </div>
+        <div id="kpiCards" class="kpiGrid"></div>
+      </section>
+
+      <!-- Profitability & Valuation Trends (combined chart) -->
+      <section class="card">
+        <div class="sectionHead">
+          <h3>Profitability & Valuation Trends</h3>
+          <div class="rightHint muted">ROE / ROA / PE / PBV / ROIC / PRICE</div>
+        </div>
+        <div class="chartBox tall">
+          <canvas id="combinedChart"></canvas>
+        </div>
+        <p class="muted note">
+          Hint: ถ้าเส้นเยอะจนรก ให้ซ่อนบาง dataset ผ่าน legend ได้ (คลิกชื่อเส้น)
+        </p>
+      </section>
+
+      <!-- 2-up charts -->
+      <section class="grid2">
+        <div class="card">
+          <div class="sectionHead">
+            <h3>Free Cash Flow Analysis</h3>
+            <div class="rightHint muted">FCF + Growth%</div>
+          </div>
+          <div class="chartBox">
+            <canvas id="fcfComboChart"></canvas>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="sectionHead">
+            <h3>Operating Cash Flow Analysis</h3>
+            <div class="rightHint muted">OCF + Growth%</div>
+          </div>
+          <div class="chartBox">
+            <canvas id="ocfComboChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- Ratio Tabs + 2 charts -->
+      <section class="card">
+        <div class="sectionHead">
+          <h3>Ratio Explorer</h3>
+          <div class="rightHint muted">เลือกหมวดแล้วดู 2 กราฟคู่</div>
+        </div>
+
+        <div class="tabs" id="ratioTabs"></div>
+
+        <div class="grid2">
+          <div class="miniCard">
+            <div class="miniHead">
+              <div id="rTitle1" class="miniTitle">—</div>
+            </div>
+            <div class="chartBox small">
+              <canvas id="rChart1"></canvas>
+            </div>
+          </div>
+
+          <div class="miniCard">
+            <div class="miniHead">
+              <div id="rTitle2" class="miniTitle">—</div>
+            </div>
+            <div class="chartBox small">
+              <canvas id="rChart2"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="card">
+        <div class="container">
+          <h1>AI Investment Insight</h1>
+          <div class="subtitle">
+            วิเคราะห์โดย GPT จากข้อมูลงบการเงิน & Valuation ของระบบ
+          </div>
+        
+          <!--button onclick="loadAI()">Run AI Analysis</!--button-->
+        
+          <div class="card">
+            <h3>🏭 คุณภาพธุรกิจ</h3>
+            <div id="aiQuality" class="text loading">กำลังรอการวิเคราะห์...</div>
+          </div>
+        
+          <div class="card">
+            <h3>💰 มูลค่า</h3>
+            <div id="aiValuation" class="text loading">กำลังรอการวิเคราะห์...</div>
+          </div>
+        
+          <div class="card">
+            <h3>⚠️ ความเสี่ยง</h3>
+            <div id="aiRisk" class="text loading">กำลังรอการวิเคราะห์...</div>
+          </div>
+        
+          <div class="card">
+            <h3>📌 มุมมองการลงทุน</h3>
+            <div id="aiView" class="text loading">กำลังรอการวิเคราะห์...</div>
+          </div>
+        </div>
+      </section>
+      <!--section class="grid3">
+        <div class="card">
+          <h4>Quality</h4>
+          <div class="badge" id="quatilyStatus">-</div>
+          <p id="qualityReason">-</p>
+        </div>
+
+      </section-->
+
+      <!-- Financial Overview table (placeholder) -->
+      <section class="card">
+        <div class="sectionHead">
+          <h3>Financial Overview</h3>
+          <div class="actions">
+            <button class="btnGhost" type="button">Export</button>
+            <button class="btnGhost" type="button">More Details</button>
+          </div>
+        </div>
+
+        <!-- ถ้านายอยาก render ตารางจริงจาก result.json ค่อยเขียนฟังก์ชันเพิ่ม -->
+        <div class="tableWrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Metric</th>
+                <th>2020</th>
+                <th>2021</th>
+                <th>2022</th>
+                <th>2023</th>
+                <th>2024</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Total Revenue</td>
+                <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
+              </tr>
+              <tr>
+                <td>Net Income</td>
+                <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
+              </tr>
+              <tr>
+                <td>Free Cash Flow</td>
+                <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
+              </tr>
+              <tr>
+                <td>WACC</td>
+                <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- (optional) cards area ถ้านายยังใช้ renderResultTable/renderCards -->
+      <section id="cards" class="cardsArea"></section>
+
+      <footer class="footer muted">
+        Built for your FastAPI + result.json pipeline.
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // แค่อัปเดต statusText ให้ดูเท่ (ไม่ยุ่งกับ app.js)
+    const _setStatus = window.setStatus;
+    window.setStatus = function(msg, type){
+      const t = document.getElementById("statusText");
+      if (t) t.textContent = type === "loading" ? "Loading..." : (type === "success" ? "OK" : (type === "error" ? "Error" : "Info"));
+      if (typeof _setStatus === "function") _setStatus(msg, type);
+    }
+
+  </script>
 </body>
 </html>

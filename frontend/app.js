@@ -1,4 +1,3 @@
-
   // app.js
 // ดึงข้อมูลจาก API แล้ววาดการ์ด + กราฟ (งบ 3 ชุด + อัตราส่วน EPS / Cost of Equity ฯลฯ)
 
@@ -65,6 +64,25 @@ const state = {
     div.textContent = msg;
     box.appendChild(div);
   }
+  ////   ================== load AI analysis ==================//
+  async function loadAI() {
+    const res = await fetch("/api/ai");
+    const ai = await res.json();
+  
+    document.getElementById("aiDecision").innerText = ai.decision;
+    document.getElementById("aiQuality").innerText = ai.quality_score;
+    document.getElementById("aiValue").innerText = ai.value_score;
+    document.getElementById("aiRisk").innerText = ai.risk_level;
+  
+    const ul = document.getElementById("aiReasons");
+    ul.innerHTML = "";
+    ai.reason.forEach(r => {
+      const li = document.createElement("li");
+      li.textContent = r;
+      ul.appendChild(li);
+    });
+  }
+  
   // ================= rander result ========================== // 
   
   function renderFromResultRows(data){
@@ -81,7 +99,7 @@ const state = {
     plotFCFCombo(rows);     // Free Cash Flow Combo Chart
     plotOCFCombo(rows);
     renderKpiCards(rows);
-
+    loadAIAnalysis(rows);
     
     // 2) ส่ง ratios ให้แท็บอัตราส่วนใช้ได้
     const ratios = data.ratios || rowsToRatios(rows);
@@ -759,6 +777,77 @@ const state = {
     renderRatioSection(data);
   }
   
+  async function loadAIAnalysis(rows) {
+    try {
+      if (!rows || !rows.length) throw new Error("rows ว่าง");
+  
+      // ถ้า frontend เปิดด้วย Live Server 5500 ให้ใช้ URL เต็ม (กัน CORS/คนละ origin)
+      const url = "http://127.0.0.1:8000/api/ai-analysis"; // หรือใช้ "/api/ai-analysis" ถ้าเสิร์ฟหน้าเว็บจาก FastAPI
+  
+      // ใส่ข้อความโหลด
+      const setLoading = (id) => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = "กำลังวิเคราะห์...";
+      };
+      ["aiQuality","aiValuation","aiRisk","aiView"].forEach(setLoading);
+  
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ result: rows })
+      });
+  
+      if (!res.ok) {
+        const t = await res.text().catch(() => "");
+        throw new Error(`AI API ${res.status} ${t}`);
+      }
+  
+      const data = await res.json();
+      const a = data?.analysis;
+  
+      // รองรับ 2 แบบ:
+      // 1) a เป็น object {quality, valuation, risk, view}
+      // 2) a เป็น {text: "..."} (กรณี GPT ส่งเป็นข้อความเดียว)
+      if (a && typeof a === "object" && ("quality" in a || "valuation" in a || "risk" in a || "view" in a)) {
+        if (document.getElementById("aiQuality"))   document.getElementById("aiQuality").innerText   = a.quality ?? "—";
+        if (document.getElementById("aiValuation")) document.getElementById("aiValuation").innerText = a.valuation ?? "—";
+        if (document.getElementById("aiRisk"))      document.getElementById("aiRisk").innerText      = a.risk ?? "—";
+        if (document.getElementById("aiView"))      document.getElementById("aiView").innerText      = a.view ?? "—";
+        return;
+      }
+  
+      if (a && typeof a === "object" && "text" in a) {
+        // ถ้าได้ text เดียว เอาไปใส่ aiView และให้ช่องอื่นเป็น —
+        if (document.getElementById("aiView")) document.getElementById("aiView").innerText = a.text ?? "—";
+        if (document.getElementById("aiQuality"))   document.getElementById("aiQuality").innerText   = "—";
+        if (document.getElementById("aiValuation")) document.getElementById("aiValuation").innerText = "—";
+        if (document.getElementById("aiRisk"))      document.getElementById("aiRisk").innerText      = "—";
+        return;
+      }
+  
+      throw new Error("รูปแบบ response ไม่ถูกต้อง (analysis ไม่มีข้อมูลที่คาดไว้)");
+  
+    } catch (err) {
+      console.error("AI ERROR:", err);
+      if (document.getElementById("aiQuality"))   document.getElementById("aiQuality").innerText   = "❌ AI ใช้งานไม่ได้";
+      if (document.getElementById("aiValuation")) document.getElementById("aiValuation").innerText = "❌ AI ใช้งานไม่ได้";
+      if (document.getElementById("aiRisk"))      document.getElementById("aiRisk").innerText      = "❌ AI ใช้งานไม่ได้";
+      if (document.getElementById("aiView"))      document.getElementById("aiView").innerText      = "❌ AI ใช้งานไม่ได้";
+    }
+  }
+  
+  /*
+  async function loadAIAnalysis(rows) {
+    const res = await fetch("/api/ai-analysis", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ result: rows })
+    });
+  
+    const data = await res.json();
+    document.getElementById("aiView").innerText = data.analysis.text;
+  }
+  */
   function buildKVCard(title, obj) {
     const card = document.createElement("div");
     card.className = "card";
@@ -1023,4 +1112,33 @@ const state = {
       chart.update();
     }
   }
-    
+ /*
+  // ================== AI Analysis (Text Insight) ==================
+  async function loadAIAnalysis(rows) {
+    try {
+      // ส่ง rows ไปให้ backend วิเคราะห์
+      const res = await fetch("/api/ai-analysis", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          result: rows
+        })
+      });
+
+      if (!res.ok) throw new Error("AI analysis failed");
+
+      const data = await res.json();
+      const a = data.analysis;
+
+      // แสดงผลข้อความ
+      document.getElementById("aiQuality").innerText   = a.quality;
+      document.getElementById("aiValuation").innerText = a.valuation;
+      document.getElementById("aiRisk").innerText      = a.risk;
+      document.getElementById("aiView").innerText      = a.view;
+
+    } catch (err) {
+      console.error(err);
+      document.getElementById("aiQuality").innerText =
+        "ไม่สามารถโหลด AI Analysis ได้";
+    }
+  } */

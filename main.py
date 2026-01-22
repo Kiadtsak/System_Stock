@@ -11,9 +11,11 @@ from typing import Dict, Tuple, List, Any
 
 # ถ้ายังอยากเก็บ import เดิมไว้ก็ได้ แต่เวอร์ชันนี้จะไม่เรียกใช้ API
 # from loader.load_stock_financial_statement_data_json import FinancialsStatement
+
 from Blackend.calculater_all import calculate_ratios_by_year
-from Blackend.valuetion_financials import run_valuation_for_symbol  #== Valuetion
+from Blackend.valuetion_financials import run_valuation_for_symbol   #== Valuetion
 from Blackend.financials_statement import FinancialsStatement
+from Blackend.AI.gpt_engine import GPTAnalysisEngine
 # =========================
 # Config
 # =========================
@@ -21,10 +23,11 @@ DATA_DIR = "data"
 EXPORT_DIR = "expotes"
 EXPORT_CSV = os.path.join(EXPORT_DIR, "result.csv")
 EXPORT_JSON = os.path.join(EXPORT_DIR, "result.json")
+EXPORT_AI_JSON = os.path.join(EXPORT_DIR, "ai_result.json")
 ERROR_LOG = "errors.log"
 
 CURRENT_YEAR = time.localtime().tm_year  # ปัจจุบัน
-MIN_YEAR = 2010                           # กันผู้ใช้ใส่ปีมั่วมาก
+MIN_YEAR = 1990                          # กันผู้ใช้ใส่ปีมั่วมาก
 
 # =========================
 # Logging
@@ -83,8 +86,6 @@ def _pick_key(d: Dict[str, Any], candidates: List[str]) -> str | None:
             return k
     return None
 
-#from loader.load_stock_financial_statement_data_json import FinancialsStatement
-#from loader.financials_statement import FinancialsStatement
 def load_financial_data(symbol: str,force_refresh: bool = False) -> Dict[str, Any]:
     """
     โหลด JSON ดิบจาก data/{symbol}_financials.json
@@ -92,15 +93,13 @@ def load_financial_data(symbol: str,force_refresh: bool = False) -> Dict[str, An
     - ถ้าเจอไฟล์อยู่แล้วและไม่ force -> โหลดไฟล์
     """
     symbol = (symbol or "").upper().strip()
-    #path = f"data/{symbol}_financials.json"
     if not symbol:
         raise ValueError("ต้องระบุสัญลักษณ์หุ้น เช่น NVDA, AMD")
     
     os.makedirs(DATA_DIR, exist_ok=True)
     path = os.path.join(DATA_DIR, f"{symbol}_financials.json")
 
-    #if not os.path.exists(path) or force_refresh:
-    #if force_refresh and os.path.exists(path):  ##
+  
     need_fetch = force_refresh or (not os.path.exists(path))
     if need_fetch:
         # ถ้า fefresh และมีไฟล์เกิมอยู่ ให้ลบทิ้ง
@@ -112,19 +111,12 @@ def load_financial_data(symbol: str,force_refresh: bool = False) -> Dict[str, An
                 print(f"⚠️ ลบไฟล์เดิมไม่สำเร็จ: {e}")                                               #
         # ลองหาแบบ case-insensitive เผื่อสะกดพิมพ์เล็กใหญ่ไม่ตรง
         print(f"ไม่พบไฟล์/บังคับรีเฟรช -> ดึงจาก API สำหรับ {symbol}...")
-    #if os.path.exists(path):
-    #    with open(path, "r", encoding="utf-8") as f:
-    #        data = json.load(f)
-    #    print(f"📂 โหลดข้อมูลจากไฟล์: {path}")
-    #    return data
         
-    #print(f"🔄 ไม่พบไฟล์ {path} หรือสั่ง refresh -> ดึงจาก API ...")
+   
         fs = FinancialsStatement(symbol=symbol)
         data = fs.load_data_json_or_api(force=True) # บังคับโหลดจาก API
 
-        #if data and not os.path.exists(path):
-        #    with open(path, "w", encoding="utf-8") as f:
-        #        json.dump(data, f, ensure_ascii=False, indent=2)
+       
         if not data:
             raise RuntimeError(f"ไม่พบข้อมูลการเงินสำหรับ {symbol} หลังดึงจาก API")
         #print(f"📂 บันทึกข้อมูลลงไฟล์: {path}")
@@ -215,18 +207,17 @@ def export_ratios_to_file(symbol: str, ratios: Dict[int, Dict[str, Any]]) -> Non
 
     df.to_csv(EXPORT_CSV, index=False, encoding="utf-8")
     df.to_json(EXPORT_JSON, orient="records", force_ascii=False, indent=2)
+    
     print(f"📦 Exported -> {EXPORT_CSV}, {EXPORT_JSON}")
 
 
-def launch_dashboard(script: str = "dashboard.py") -> None:
-    """
-    Option: เปิด Streamlit dashboard ถ้าผู้ใช้ส่ง --dashboard
-    """
-    import subprocess
-    print("🔄 กำลังเปิด Dashboard...")
-    subprocess.run(["streamlit", "run", script], check=True)
-
-
+#def launch_dashboard(script: str = "dashboard.py") -> None:
+#    """
+#   Option: เปิด Streamlit dashboard ถ้าผู้ใช้ส่ง --dashboard
+#    """
+#    import subprocess
+#    print("🔄 กำลังเปิด Dashboard...")
+#    subprocess.run(["streamlit", "run", script], check=True)
 
 # =========================
 # CLI
@@ -284,11 +275,52 @@ def main() -> int:
             if valuation.get('intrinsic_value_per_share') is not None:
                 print(f"   มูลค่าเหมาะสมต่อหุ้น: {valuation['intrinsic_value_per_share']:.2f}")
             print("📦 Exported -> expotes/valuation.json, expotes/valuation.csv")
+            ai_engine = GPTAnalysisEngine()
+
+            ai_payload = ai_engine.analyze_from_files(
+                ratios_path=EXPORT_JSON,
+                valuation_path = os.path.join(EXPORT_DIR, "result.json"),
+                #use_latest_only=True, 
+                model="gpt-5.2",
+            )
+            
+            with open(EXPORT_AI_JSON, "w", encoding="utf-8") as f:
+                json.dump(ai_payload, f, ensure_ascii=False, indent=2)
+
+            print(f" AI 🧠 วิเคราะห์เสร็จสิ้น! บันทึกผลลัพธ์ใน {EXPORT_AI_JSON}")
+           
+            """
+            print("AI 🧠 กำลังวิเคราะห์ข้อมูลทางการเงินด้วยของหุ้นจากผลลัพธ์ล่าสุด GPT.... ")
+
+            ai_engine = GPTAnalysisEngine()
+            # โหลดข้อมูลจากไฟล์ JSON ที่ส่งออก
+            with open(EXPORT_JSON, "r", encoding="utf-8") as f:
+                result_data = json.load(f)
+
+            # โหลด valuation.json (ถ้ามี)
+            valuation_path = os.path.join(EXPORT_DIR, "valuation.json")
+            validated = {}
+            if os.path.exists(valuation_path):
+                with open(valuation_path, "r", encoding="utf-8") as f:
+                    validated = json.load(f)
+            
+            ai_result = ai_engine.analysis(
+                result=result_data,
+                valuation=validated
+            )
+
+            # บันทึกผลลัพธ์ AI ลงไฟล์
+            with open(EXPORT_AI_JSON, "w", encoding="utf-8") as f:
+                json.dump(ai_result, f, ensure_ascii=False, indent=2)
+
+            print(f" AI 🧠 วิเคราะห์เสร็จสิ้น! บันทึกผลลัพธ์ใน {EXPORT_AI_JSON}")
+            """      
         except Exception as ve:
             print(f"⚠️ ข้ามขั้น Valuation (มีปัญหา): {ve}")
-
-        if args.dashboard:
-            launch_dashboard()
+            #print(f" AI วิเคราห์ไม่สำเร็จซ {ve}")
+            print(f" AI 🧠 วิเคราะห์ไม่สำเร็จ: {ve}")
+        #if args.dashboard:
+        #    launch_dashboard()
 
     except Exception as e:
         logger.exception(f"เกิดข้อผิดพลาดในการประมวลผลข้อมูลหุ้น {symbol}")

@@ -4,10 +4,11 @@ import json
 from pathlib import Path
 from typing import Dict, Any
 
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, APIRouter,  HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
+from Blackend.AI.gpt_engine import GPTAnalysisEngine  
 
 ROOT = Path(__file__).resolve().parent
 RESULT_PATH = ROOT / "expotes" / "result.json"
@@ -26,8 +27,8 @@ app.add_middleware(
         "http://127.0.0.1:8000", 
         "http://127.0.0.1:5500",
         "http://localhost:5500", 
-        "http://localhost:3000"
-        "http://AnalysisWindzora.com"
+        "http://localhost:3000",
+        #"http://AnalysisWindzora.com"
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -72,12 +73,7 @@ def financials(
     export_ratios_to_file(sym, ratios_by_year)
 
     # 3) ประเมินมูลค่า (อ่านจาก expotes/result.json เป็นฐาน)
-    valuation = None
-    try:
-        valuation = run_valuation_for_symbol(sym, export_json_path=EXPORT_JSON)
-    except Exception as e:
-        valuation = {"error": str(e)}
-
+    
     # 4) อ่านผลลัพธ์ที่ “ประเมินแล้ว” จาก expotes/result.json
     if not RESULT_PATH.exists():
         raise HTTPException(status_code=500, detail="result.json not generated")
@@ -110,7 +106,8 @@ def financials(
         "latest": rows[-1],
         "years": [str(r.get("Year")) for r in rows],
         "ratios": rows_to_ratios(rows),     # ✅ ทำให้ app.js ใช้ ratio tabs ได้เลย
-        "valuation": valuation              # ✅ ส่ง valuation ไปด้วย
+        #"valuation": valuation,             # ✅ ส่ง valuation ไปด้วย
+       # "ai": ai_result                     # ✅ ส่งผลวิเคราะห์ AI ไปด้วย
     }
 
 # (ทางเลือก) ถ้าอยากดูงบดิบจริง ๆ ให้แยก endpoint นี้ไว้
@@ -125,6 +122,47 @@ def raw_financials(symbol: str) -> Dict[str, Any]:
         "cash_flow_statement": cashflow,
         "basic_info": basic,
     }
+"""
+@app.post("/api/ai-analysis")
+def ai_analysis(payload: dict):
+    print("🔥 AI Payload:", payload)
+
+    result = payload.get("result")
+    if not result:
+        return {"error": "No result data provided"}
+
+    # ✅ โหลด valuation.json (อ่านอย่างเดียว)
+    with open(RESULT_PATH, "r", encoding="utf-8") as f:
+        valuation = json.load(f)
+
+    # ✅ เรียก GPT Engine
+    engine = GPTAnalysisEngine()
+    analysis = engine.analyze_from_files(result, valuation)
+
+    # ✅ return ให้ frontend ใช้ได้ทันที
+    return {
+        "analysis": analysis
+    }
+"""
+"""
+@app.post("/api/ai-analysis")
+def ai_analysis(payload: dict):
+    result = payload.get("result")
+
+    with open(RESULT_PATH, "r", encoding="utf-8") as f:
+        json.dump(result, f, ensure_ascii=False, indent=4)
+        valuation = json.load(f)
+    
+    engine = GPTAnalysisEngine()
+    tetx = engine.analysis(result, valuation)
+
+    print("AI Playload:", payload)
+    return {
+        "analysis":{
+            "text"
+        }
+    }
+"""
 
 # เสิร์ฟ frontend เหมือนเดิม
 FE_DIR = ROOT / "frontend"

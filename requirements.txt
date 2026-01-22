@@ -5,5 +5,5 @@ matplotlib==3.8.0
 numpy==1.26.4
 fastapi==0.116.2
 uvicorn==0.24.0
-PyYAML==6.0.2
+PyYAML==6.0.3
 openai==1.98.0
