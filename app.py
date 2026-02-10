@@ -3,6 +3,8 @@
 import json
 from pathlib import Path
 from typing import Dict, Any
+import time
+import logging
 
 from fastapi import FastAPI, APIRouter,  HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
@@ -20,6 +22,11 @@ from main import (
 from Blackend.valuetion_financials import run_valuation_for_symbol
 
 app = FastAPI(title="Financials API", version="1.0")
+
+
+logger = logging.getLogger("AI")
+logging.basicConfig(level=logging.INFO)
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -107,7 +114,7 @@ def financials(
         "years": [str(r.get("Year")) for r in rows],
         "ratios": rows_to_ratios(rows),     # ✅ ทำให้ app.js ใช้ ratio tabs ได้เลย
         #"valuation": valuation,             # ✅ ส่ง valuation ไปด้วย
-       # "ai": ai_result                     # ✅ ส่งผลวิเคราะห์ AI ไปด้วย
+        #"ai": ai_result                     # ✅ ส่งผลวิเคราะห์ AI ไปด้วย
     }
 
 # (ทางเลือก) ถ้าอยากดูงบดิบจริง ๆ ให้แยก endpoint นี้ไว้
@@ -122,47 +129,87 @@ def raw_financials(symbol: str) -> Dict[str, Any]:
         "cash_flow_statement": cashflow,
         "basic_info": basic,
     }
-"""
+
 @app.post("/api/ai-analysis")
-def ai_analysis(payload: dict):
-    print("🔥 AI Payload:", payload)
+def ai_analysis(payload: Dict[str, Any]):
+    start = time.time()
+    logger.info("🧠 AI analysis requested")
+
+    # ---------- 1) Validate payload ----------
+    if not isinstance(payload, dict):
+        raise HTTPException(status_code=400, detail="Payload must be JSON object")
 
     result = payload.get("result")
-    if not result:
-        return {"error": "No result data provided"}
+    if not isinstance(result, list) or not result:
+        raise HTTPException(
+            status_code=400,
+            detail="Payload must contain non-empty 'result' list"
+        )
 
-    # ✅ โหลด valuation.json (อ่านอย่างเดียว)
-    with open(RESULT_PATH, "r", encoding="utf-8") as f:
-        valuation = json.load(f)
+    # ---------- 2) Load base data ----------
+    if not RESULT_PATH.exists():
+        raise HTTPException(status_code=500, detail="result.json not found")
 
-    # ✅ เรียก GPT Engine
-    engine = GPTAnalysisEngine()
-    analysis = engine.analyze_from_files(result, valuation)
+    try:
+        with open(RESULT_PATH, "r", encoding="utf-8") as f:
+            valuation_base = json.load(f)
+    except Exception as e:
+        logger.error("❌ Failed to load result.json")
+        raise HTTPException(status_code=500, detail=str(e))
 
-    # ✅ return ให้ frontend ใช้ได้ทันที
+    # ---------- 3) Run AI safely ----------
+    try:
+        engine = GPTAnalysisEngine()
+
+        analysis = engine.analyze_from_files(
+            result=result,
+            valuation_obj=valuation_base,
+            use_latest_only=True
+        )
+
+    except Exception as e:
+        logger.error("🔥 AI ENGINE FAILED")
+        #logger.error(traceback.format_exc())
+
+        raise HTTPException(
+            status_code=500,
+            detail={
+                "message": "AI analysis failed",
+                "error": str(e),
+                "type": type(e).__name__
+            }
+        )
+
+    # ---------- 4) Done ----------
+    elapsed = round(time.time() - start, 2)
+    logger.info(f"✅ AI analysis completed in {elapsed}s")
+
     return {
+        "status": "success",
+        "elapsed_seconds": elapsed,
         "analysis": analysis
     }
-"""
-"""
-@app.post("/api/ai-analysis")
-def ai_analysis(payload: dict):
-    result = payload.get("result")
 
-    with open(RESULT_PATH, "r", encoding="utf-8") as f:
-        json.dump(result, f, ensure_ascii=False, indent=4)
-        valuation = json.load(f)
-    
-    engine = GPTAnalysisEngine()
-    tetx = engine.analysis(result, valuation)
+#@app.post("/api/ai-analysis")
+#def ai_analysis(payload: dict):
+#    print("🔥 AI Payload:", payload)
 
-    print("AI Playload:", payload)
-    return {
-        "analysis":{
-            "text"
-        }
-    }
-"""
+#    result = payload.get("result")
+#    if not result:
+#        return {"error": "No result data provided"}
+
+    # ✅ โหลด valuation.json (อ่านอย่างเดียว)
+#    with open(RESULT_PATH, "r", encoding="utf-8") as f:
+#        valuation = json.load(f)
+#
+    # ✅ เรียก GPT Engine
+#    engine = GPTAnalysisEngine()
+#    analysis = engine.analyze_from_files(result, valuation)
+
+    # ✅ return ให้ frontend ใช้ได้ทันที
+#    return {
+#        "analysis": analysis
+#    }
 
 # เสิร์ฟ frontend เหมือนเดิม
 FE_DIR = ROOT / "frontend"

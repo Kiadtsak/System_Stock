@@ -26,8 +26,9 @@ const state = {
       setStatus("กรุณากรอก symbol หรือ filename อย่างน้อย 1 ช่อง", "error");
       return;
     }
-  
-    setStatus("กำลังดึงข้อมูลจาก API ...", "loading");
+    
+    setStatus("กำลังโหลด ข้อมูล...", "info");
+    //setStatus("กำลังดึงข้อมูลจาก API ...", "loading");
   
     const params = new URLSearchParams();
     if (symbol) params.set("symbol", symbol);
@@ -64,24 +65,6 @@ const state = {
     div.textContent = msg;
     box.appendChild(div);
   }
-  ////   ================== load AI analysis ==================//
-  async function loadAI() {
-    const res = await fetch("/api/ai");
-    const ai = await res.json();
-  
-    document.getElementById("aiDecision").innerText = ai.decision;
-    document.getElementById("aiQuality").innerText = ai.quality_score;
-    document.getElementById("aiValue").innerText = ai.value_score;
-    document.getElementById("aiRisk").innerText = ai.risk_level;
-  
-    const ul = document.getElementById("aiReasons");
-    ul.innerHTML = "";
-    ai.reason.forEach(r => {
-      const li = document.createElement("li");
-      li.textContent = r;
-      ul.appendChild(li);
-    });
-  }
   
   // ================= rander result ========================== // 
   
@@ -94,12 +77,14 @@ const state = {
 
     // 1) โชว์ตาราง result.json ให้เห็นชัด ๆ (แทนงบดิบ)
     
-    //renderResultTable(rows);
+    renderResultTable(rows);
+    //renderFinancialOverviewTable(rows);
     plotCombined5(rows);     // Combined 5 Chart PE PBV ROE RoA Price EPS
     plotFCFCombo(rows);     // Free Cash Flow Combo Chart
     plotOCFCombo(rows);
     renderKpiCards(rows);
     loadAIAnalysis(rows);
+    //loadAI(rows);
     
     // 2) ส่ง ratios ให้แท็บอัตราส่วนใช้ได้
     const ratios = data.ratios || rowsToRatios(rows);
@@ -722,7 +707,7 @@ const state = {
     return keys.filter(k => rows.some(r => Number.isFinite(Number(r[k]))));
   }
   
-  function renderResultTable(rows){
+  function renderResultTable(rows) {
     const cards = document.getElementById("cards");
     if (!cards) return;
     cards.innerHTML = "";
@@ -731,34 +716,42 @@ const state = {
     card.className = "card";
   
     const title = document.createElement("h3");
-    title.textContent = "RESULT (จาก expotes/result.json)";
+    title.textContent = "Financial Overview (แนวนอน)";
     card.appendChild(title);
   
-    const ignore = new Set(["Stock Symbol","Symbol","symbol"]);
+    const ignore = new Set(["Stock Symbol", "Symbol", "symbol"]);
     const allKeys = Object.keys(rows[0] || {}).filter(k => !ignore.has(k));
   
-    // เอา Year + 16 ตัวแรกพอ อ่านง่าย (ปรับได้)
-    const cols = ["Year", ...allKeys.filter(k => k !== "Year").slice(0, 16)];
+    const years = rows.map(r => r["Year"]);
+    const metrics = allKeys.filter(k => k !== "Year");
   
     const table = document.createElement("table");
     table.className = "table";
   
+    // Header row: Year columns
     const thead = document.createElement("thead");
-    thead.innerHTML = `<tr>${cols.map(c => `<th>${c}</th>`).join("")}</tr>`;
+    const headerRow = document.createElement("tr");
+    headerRow.innerHTML = `<th>Metric</th>` + years.map(y => `<th>${y}</th>`).join("");
+    thead.appendChild(headerRow);
     table.appendChild(thead);
   
+    // Body rows: Each metric in a row
     const tbody = document.createElement("tbody");
-    rows.forEach(r => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = cols.map(c => `<td>${formatValue(r[c])}</td>`).join("");
-      tbody.appendChild(tr);
+    metrics.forEach(metric => {
+      const row = document.createElement("tr");
+      let cells = `<td>${metric}</td>`;
+      rows.forEach(r => {
+        cells += `<td>${formatValue(r[metric])}</td>`;
+      });
+      row.innerHTML = cells;
+      tbody.appendChild(row);
     });
-    table.appendChild(tbody);
   
+    table.appendChild(tbody);
     card.appendChild(table);
     cards.appendChild(card);
   }
- 
+
   // ================== render หลัก ==================
   
   function renderAll(data) {
@@ -835,19 +828,7 @@ const state = {
       if (document.getElementById("aiView"))      document.getElementById("aiView").innerText      = "❌ AI ใช้งานไม่ได้";
     }
   }
-  
-  /*
-  async function loadAIAnalysis(rows) {
-    const res = await fetch("/api/ai-analysis", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ result: rows })
-    });
-  
-    const data = await res.json();
-    document.getElementById("aiView").innerText = data.analysis.text;
-  }
-  */
+
   function buildKVCard(title, obj) {
     const card = document.createElement("div");
     card.className = "card";
@@ -1112,33 +1093,4 @@ const state = {
       chart.update();
     }
   }
- /*
-  // ================== AI Analysis (Text Insight) ==================
-  async function loadAIAnalysis(rows) {
-    try {
-      // ส่ง rows ไปให้ backend วิเคราะห์
-      const res = await fetch("/api/ai-analysis", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          result: rows
-        })
-      });
-
-      if (!res.ok) throw new Error("AI analysis failed");
-
-      const data = await res.json();
-      const a = data.analysis;
-
-      // แสดงผลข้อความ
-      document.getElementById("aiQuality").innerText   = a.quality;
-      document.getElementById("aiValuation").innerText = a.valuation;
-      document.getElementById("aiRisk").innerText      = a.risk;
-      document.getElementById("aiView").innerText      = a.view;
-
-    } catch (err) {
-      console.error(err);
-      document.getElementById("aiQuality").innerText =
-        "ไม่สามารถโหลด AI Analysis ได้";
-    }
-  } */
+ 

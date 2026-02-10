@@ -304,6 +304,38 @@ body{
 .miniHead{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px}
 .miniTitle{font-weight:900}
 
+/* ตารางภาพรวมการเงิน */
+
+#financialOverview {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#financialOverview th,
+#financialOverview td {
+  padding: 10px;
+  text-align: right;
+}
+
+#financialOverview th:first-child,
+#financialOverview td:first-child {
+  text-align: left;
+  font-weight: 600;
+}
+
+.latest-year {
+  background: rgba(0, 255, 180, 0.08);
+  font-weight: 700;
+}
+
+.up {
+  color: #4ade80; /* เขียว */
+}
+
+.down {
+  color: #f87171; /* แดง */
+}
+
 /* Tabs */
 .tabs{
   display:flex;
