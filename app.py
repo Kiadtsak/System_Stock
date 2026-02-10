@@ -184,6 +184,8 @@ def ai_analysis(payload: Dict[str, Any]):
     elapsed = round(time.time() - start, 2)
     logger.info(f"✅ AI analysis completed in {elapsed}s")
 
+    #print(f"AI {payload}")
+    print(f"ประเมินผลลัพเสร็จแล้ว {analysis}")
     return {
         "status": "success",
         "elapsed_seconds": elapsed,
