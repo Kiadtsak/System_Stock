@@ -185,7 +185,7 @@ def ai_analysis(payload: Dict[str, Any]):
     logger.info(f"✅ AI analysis completed in {elapsed}s")
 
     #print(f"AI {payload}")
-    print(f"ประเมินผลลัพเสร็จแล้ว {analysis}")
+    #print(f"ประเมินผลลัพเสร็จแล้ว {analysis}")
     return {
         "status": "success",
         "elapsed_seconds": elapsed,
