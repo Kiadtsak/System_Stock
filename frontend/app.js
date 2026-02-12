@@ -752,8 +752,8 @@ const state = {
       if (!rows || !rows.length) throw new Error("rows ว่าง");
   
       // ถ้า frontend เปิดด้วย Live Server 5500 ให้ใช้ URL เต็ม (กัน CORS/คนละ origin)
-      const url = "http://127.0.0.1:8000/api/ai-analysis"; // หรือใช้ "/api/ai-analysis" ถ้าเสิร์ฟหน้าเว็บจาก FastAPI
-  
+      //const url = "http://127.0.0.1:8000/api/ai-analysis"; // หรือใช้ "/api/ai-analysis" ถ้าเสิร์ฟหน้าเว็บจาก FastAPI
+      const url = "/api/ai-analysis";
       // ใส่ข้อความโหลด
       const setLoading = (id) => {
         const el = document.getElementById(id);

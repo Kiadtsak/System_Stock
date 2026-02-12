@@ -3,7 +3,6 @@
 
 # Blackend/AI/gpt_engine.py
 
-
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
@@ -56,12 +55,14 @@ class GPTAnalysisEngine:
            analysis = json.loads(text)
         except json.JSONDecodeError:
             analysis = {
-                "quality": text,
-                "profitability_efficiency": "-",
-                "valuation": "-",
-                "risks": "-",
-                "view": "-",
-                "suitable_for": "-",
-                "_note": "AI ตอบไม่เป็น JSON 100% (fallback เก็บเป็นข้อความ)",
+                #"quality": text,
+                #"profitability_efficiency": text,
+                #"valuation": "-",
+                #"risks": "-",
+                "ผลการวิเคราะห์": text,
+                #"suitable_for": "-",
+                #"_note": "AI ตอบไม่เป็น JSON 100% (fallback เก็บเป็นข้อความ)",
             }
+
+        
         return analysis

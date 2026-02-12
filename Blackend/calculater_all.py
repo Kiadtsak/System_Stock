@@ -1,11 +1,9 @@
 from Blackend.Settings import YEAR
-#from processing import profitability, liquidity, efficiency, valuation
 from Blackend.Analysis_Statement import CashFlowModel
 
 def calculate_ratios_by_year(income_data, balance_data, cashflow_data, basic_info, year=YEAR):
     results = {}
     for year in sorted(set(income_data) & set(balance_data) & set(cashflow_data)):
-    #for year in income_data.keys():
        # Ensure year is a string to match keys in data
         try:
             income = income_data[year] or {}
@@ -88,12 +86,10 @@ def calculate_ratios_by_year(income_data, balance_data, cashflow_data, basic_inf
                 "PBV Ratio": model.PBV_Ratio(),
                 #"EPS_Ratio": valuation.eps_ratio(income),
                 #"Owner Earnings": valuation.owner_earnings(income, cashflow),
-               # "EPS": valuation.eps_ratio(income),
+                #"EPS": valuation.eps_ratio(income),
                 #"Compound Aunual Growth Rate (CAGR) (อัตราการเติบโต)": valuation.Compound_Annual_Growth_Rate(cashflow)
-               # "PE Ratio": valuation.PE_ratios(income),
+                #"PE Ratio": valuation.PE_ratios(income),
                 #"PB Ratio": valuation.pb_ratio(balance)
-            
-            
             }
             
         except Exception as e:
