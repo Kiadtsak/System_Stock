@@ -384,29 +384,6 @@ const state = {
             yAxisID: "yPct",
             tension: 0.25,
             pointRadius: 3,
-           /* 
-            // สี “จุด” เปลี่ยนตามค่าบวก/ลบ
-            pointBackgroundColor: (ctx) => {
-              const v = ctx.raw;
-              if (v == null) return "rgba(255, 255, 255, .35";
-              return v < 0 ? "#EF4444" : "#10B981"; // แดง / ชมพู
-            },
-            pointBorderColor: (ctx) => {
-              const v = ctx.raw;
-              if (v == null) return "rgba(255, 255, 255, .35";
-              return v < 0 ? "#EF4444" : "#10B981"; // แดง / เขียว
-            },
-            //สี “เส้น” เปลี่ยนตาม segment (ช่วงเส้น) ตามค่าบวก/ลบ
-            segment: {
-              borderColor: (ctx) => {
-                const y0 = ctx.p0.parsed.y;
-                const y1 = ctx.p1.parsed.y;
-                // ถ้าช่วงเวลานี้มีค่าติดลบ ไห้เป็นแดง
-                return (y0 < 0 || y1 < 0) ? "#EF4444" : "#10B981";
-              }
-            },
-            borderColor: 3,
-            */
           }
         ]
       },
@@ -805,13 +782,13 @@ const state = {
         if (document.getElementById("aiQuality"))   document.getElementById("aiQuality").innerText   = a.quality ?? "—";
         if (document.getElementById("aiValuation")) document.getElementById("aiValuation").innerText = a.valuation ?? "—";
         if (document.getElementById("aiRisk"))      document.getElementById("aiRisk").innerText      = a.risk ?? "—";
-        if (document.getElementById("aiView"))      document.getElementById("aiView").innerText      = a.view ?? "—";
+        if (document.getElementById("aiView"))      document.getElementById("aiView").innerHTML      = a.view ?? "—";
         return;
       }
   
       if (a && typeof a === "object" && "text" in a) {
         // ถ้าได้ text เดียว เอาไปใส่ aiView และให้ช่องอื่นเป็น —
-        if (document.getElementById("aiView")) document.getElementById("aiView").innerText = a.text ?? "—";
+        if (document.getElementById("aiView")) document.getElementById("aiView").innerHTML = a.text ?? "—";
         if (document.getElementById("aiQuality"))   document.getElementById("aiQuality").innerText   = "—";
         if (document.getElementById("aiValuation")) document.getElementById("aiValuation").innerText = "—";
         if (document.getElementById("aiRisk"))      document.getElementById("aiRisk").innerText      = "—";
@@ -825,7 +802,7 @@ const state = {
       if (document.getElementById("aiQuality"))   document.getElementById("aiQuality").innerText   = "❌ AI ใช้งานไม่ได้";
       if (document.getElementById("aiValuation")) document.getElementById("aiValuation").innerText = "❌ AI ใช้งานไม่ได้";
       if (document.getElementById("aiRisk"))      document.getElementById("aiRisk").innerText      = "❌ AI ใช้งานไม่ได้";
-      if (document.getElementById("aiView"))      document.getElementById("aiView").innerText      = "❌ AI ใช้งานไม่ได้";
+      if (document.getElementById("aiView"))      document.getElementById("aiView").innerHTML      = "❌ AI ใช้งานไม่ได้";
     }
   }
 

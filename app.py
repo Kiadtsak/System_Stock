@@ -183,35 +183,17 @@ def ai_analysis(payload: Dict[str, Any]):
     # ---------- 4) Done ----------
     elapsed = round(time.time() - start, 2)
     logger.info(f"✅ AI analysis completed in {elapsed}s")
+   
+    if not isinstance(analysis, str):
+        analysis = str(analysis)
 
-    #print(f"AI {payload}")
-    #print(f"ประเมินผลลัพเสร็จแล้ว {analysis}")
     return {
         "status": "success",
         "elapsed_seconds": elapsed,
-        "analysis": analysis
+        "analysis":{                        
+            "text": str(analysis)
+        }
     }
-
-#@app.post("/api/ai-analysis")
-#def ai_analysis(payload: dict):
-#    print("🔥 AI Payload:", payload)
-
-#    result = payload.get("result")
-#    if not result:
-#        return {"error": "No result data provided"}
-
-    # ✅ โหลด valuation.json (อ่านอย่างเดียว)
-#    with open(RESULT_PATH, "r", encoding="utf-8") as f:
-#        valuation = json.load(f)
-#
-    # ✅ เรียก GPT Engine
-#    engine = GPTAnalysisEngine()
-#    analysis = engine.analyze_from_files(result, valuation)
-
-    # ✅ return ให้ frontend ใช้ได้ทันที
-#    return {
-#        "analysis": analysis
-#    }
 
 # เสิร์ฟ frontend เหมือนเดิม
 FE_DIR = ROOT / "frontend"

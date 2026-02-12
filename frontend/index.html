@@ -11,6 +11,7 @@
 
   <link rel="stylesheet" href="style.css"/>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="./app.js" defer></script>
 </head>
 
@@ -187,9 +188,10 @@
         
           <!--button onclick="loadAI()">Run AI Analysis</!--button-->
         
-          <div class="card">
-            <h3>🏭 คุณภาพธุรกิจ</h3>
-            <div id="aiQuality" class="text loading">กำลังรอการวิเคราะห์...</div>
+          <class="card">
+            <h3>🏭 วิเคราะห์โดย AI </h3>
+            <!--div id="aiQuality" class="text loading">กำลังรอการวิเคราะห์...</!--div-->
+            <div id="aiView" class="text loading">กำลังรอการวิเคราะห์...</div>
           </div>
         
       </section>
