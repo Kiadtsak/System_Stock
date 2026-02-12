@@ -35,7 +35,6 @@ app.add_middleware(
         "http://127.0.0.1:5500",
         "http://localhost:5500", 
         "http://localhost:3000",
-        #"http://AnalysisWindzora.com"
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -78,8 +77,6 @@ def financials(
     ys = parse_years(years)
     ratios_by_year = calculate_ratios(income, balance, cashflow, basic, ys)
     export_ratios_to_file(sym, ratios_by_year)
-
-    # 3) ประเมินมูลค่า (อ่านจาก expotes/result.json เป็นฐาน)
     
     # 4) อ่านผลลัพธ์ที่ “ประเมินแล้ว” จาก expotes/result.json
     if not RESULT_PATH.exists():
@@ -113,8 +110,6 @@ def financials(
         "latest": rows[-1],
         "years": [str(r.get("Year")) for r in rows],
         "ratios": rows_to_ratios(rows),     # ✅ ทำให้ app.js ใช้ ratio tabs ได้เลย
-        #"valuation": valuation,             # ✅ ส่ง valuation ไปด้วย
-        #"ai": ai_result                     # ✅ ส่งผลวิเคราะห์ AI ไปด้วย
     }
 
 # (ทางเลือก) ถ้าอยากดูงบดิบจริง ๆ ให้แยก endpoint นี้ไว้
@@ -134,7 +129,7 @@ def raw_financials(symbol: str) -> Dict[str, Any]:
 def ai_analysis(payload: Dict[str, Any]):
     start = time.time()
     logger.info("🧠 AI analysis requested")
-
+    
     # ---------- 1) Validate payload ----------
     if not isinstance(payload, dict):
         raise HTTPException(status_code=400, detail="Payload must be JSON object")
@@ -145,25 +140,13 @@ def ai_analysis(payload: Dict[str, Any]):
             status_code=400,
             detail="Payload must contain non-empty 'result' list"
         )
-
-    # ---------- 2) Load base data ----------
-    if not RESULT_PATH.exists():
-        raise HTTPException(status_code=500, detail="result.json not found")
-
-    try:
-        with open(RESULT_PATH, "r", encoding="utf-8") as f:
-            valuation_base = json.load(f)
-    except Exception as e:
-        logger.error("❌ Failed to load result.json")
-        raise HTTPException(status_code=500, detail=str(e))
-
-    # ---------- 3) Run AI safely ----------
+    # ---------- 2) Load base data ---------- 
     try:
         engine = GPTAnalysisEngine()
 
         analysis = engine.analyze_from_files(
             result=result,
-            valuation_obj=valuation_base,
+           #valuation_obj=result,
             use_latest_only=True
         )
 

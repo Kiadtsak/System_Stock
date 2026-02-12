@@ -288,33 +288,7 @@ def main() -> int:
                 json.dump(ai_payload, f, ensure_ascii=False, indent=2)
 
             print(f" AI 🧠 วิเคราะห์เสร็จสิ้น! บันทึกผลลัพธ์ใน {EXPORT_AI_JSON}")
-           
-            """
-            print("AI 🧠 กำลังวิเคราะห์ข้อมูลทางการเงินด้วยของหุ้นจากผลลัพธ์ล่าสุด GPT.... ")
-
-            ai_engine = GPTAnalysisEngine()
-            # โหลดข้อมูลจากไฟล์ JSON ที่ส่งออก
-            with open(EXPORT_JSON, "r", encoding="utf-8") as f:
-                result_data = json.load(f)
-
-            # โหลด valuation.json (ถ้ามี)
-            valuation_path = os.path.join(EXPORT_DIR, "valuation.json")
-            validated = {}
-            if os.path.exists(valuation_path):
-                with open(valuation_path, "r", encoding="utf-8") as f:
-                    validated = json.load(f)
-            
-            ai_result = ai_engine.analysis(
-                result=result_data,
-                valuation=validated
-            )
-
-            # บันทึกผลลัพธ์ AI ลงไฟล์
-            with open(EXPORT_AI_JSON, "w", encoding="utf-8") as f:
-                json.dump(ai_result, f, ensure_ascii=False, indent=2)
-
-            print(f" AI 🧠 วิเคราะห์เสร็จสิ้น! บันทึกผลลัพธ์ใน {EXPORT_AI_JSON}")
-            """      
+        
         except Exception as ve:
             print(f"⚠️ ข้ามขั้น Valuation (มีปัญหา): {ve}")
             #print(f" AI วิเคราห์ไม่สำเร็จซ {ve}")
