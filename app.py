@@ -13,7 +13,7 @@ from pydantic import BaseModel
 from Blackend.AI.gpt_engine import GPTAnalysisEngine  
 
 ROOT = Path(__file__).resolve().parent
-RESULT_PATH = ROOT / "expotes" / "result.json"
+
 
 from main import (
     load_financial_data, validate_data, calculate_ratios,
@@ -65,6 +65,7 @@ def financials(
     years: str | None = None,
     refresh: bool = False
 ) -> Dict[str, Any]:
+    
     sym = symbol.strip().upper()
     if not sym:
         raise HTTPException(status_code=400, detail="Symbol is required")
@@ -76,40 +77,27 @@ def financials(
     # 2) คำนวณ ratio แล้ว export -> expotes/result.json
     ys = parse_years(years)
     ratios_by_year = calculate_ratios(income, balance, cashflow, basic, ys)
-    export_ratios_to_file(sym, ratios_by_year)
     
     # 4) อ่านผลลัพธ์ที่ “ประเมินแล้ว” จาก expotes/result.json
-    if not RESULT_PATH.exists():
-        raise HTTPException(status_code=500, detail="result.json not generated")
+    export_ratios_to_file(sym, ratios_by_year)
 
-    try:
-        all_rows = json.loads(RESULT_PATH.read_text(encoding="utf-8"))
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Read result.json failed: {e}")
+    rows = []
+    for year, values in ratios_by_year.items():
+        row = {
+            "symbol": sym,
+            "Year": year,
+            **values
+        }
+        rows.append(row)
 
-    if not isinstance(all_rows, list):
-        raise HTTPException(status_code=500, detail="result.json must be a list")
-
-    rows = [
-        r for r in all_rows
-        if str(r.get("Stock Symbol") or r.get("symbol") or r.get("Symbol") or "").upper() == sym
-    ]
-    if not rows:
-        raise HTTPException(status_code=404, detail=f"No rows for {sym} in result.json")
-
-    # sort ปี
-    def _year(x):
-        try: return int(x.get("Year"))
-        except: return 0
-    rows = sorted(rows, key=_year)
+    rows = sorted(rows, key=lambda x: int(x.get("Year", 0)))
 
     return {
         "symbol": sym,
-        "source_file": str(RESULT_PATH),
         "result": rows,
-        "latest": rows[-1],
+        "latest": rows[-1] if rows else None,
         "years": [str(r.get("Year")) for r in rows],
-        "ratios": rows_to_ratios(rows),     # ✅ ทำให้ app.js ใช้ ratio tabs ได้เลย
+        "ratios": rows_to_ratios(rows), 
     }
 
 # (ทางเลือก) ถ้าอยากดูงบดิบจริง ๆ ให้แยก endpoint นี้ไว้
