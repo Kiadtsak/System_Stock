@@ -159,28 +159,64 @@ class CashFlowModel:
 
     def intrinsic_value_per_share(self, ufcf_series, years: int = 10) -> float:
         """
-        ราคาเหมาะสมต่อหุ้น = (PV(UFCF) + PV(Terminal)) / Shares
+        ราคาเหมาะสมต่อหุ้น (DCF Based)
+        Equity Value = Enterprise Value - Net Debt
         """
-        dcf_stream = self.dcf_model_multiyear(ufcf_series, years=years)
-        total_value = float(np.sum(dcf_stream))
 
-        # ดึง shares แบบปลอดภัย + รองรับ key หลายแบบ
+        dcf_stream = self.dcf_model_multiyear(ufcf_series, years=years)
+        
+        if not isinstance(dcf_stream, (list, np.ndarray)):
+            raise ValueError("DCF stream be array-like")
+        
+        enterprise_value = float(np.sum(dcf_stream))
+
+        # คำนวณ Net Debt
+        total_debt = float(self.balance("Total Debt", 0))
+        cash = float(self.balance("Cash and Cash Equivalents", 0))
+        net_debt = total_debt - cash
+
+        equity_value = enterprise_value - net_debt
+
+        # ----- Shares -----
         shares = (
-            self.income.get("Weighted Average Shares")
-            or self.income.get("Weighted Average Shares Outstanding")
-            or self.income.get("WeightedAverageSharesOutstanding")
-            or 1
+            self.income("Weighted Average Shares")
+            or self.income("Weighted Average Shares Outstanding")
+            or self.income("WeightedAverageSharesOutstanding")
         )
 
-        try:
-            shares = float(shares)
-        except Exception:
-            shares = 1.0
-
+        if not shares:
+            raise ValueError("Shares data not found")
+        
+        shares = float(shares)
         if shares <= 0:
-            shares = 1.0
+            raise ValueError("Invalid shares Outstanding")
+        
+        return round(equity_value / shares, 2)
 
-        return round(total_value / shares, 2)
+    #def intrinsic_value_per_share(self, ufcf_series, years: int = 10) -> float:
+    #    """
+    #    ราคาเหมาะสมต่อหุ้น = (PV(UFCF) + PV(Terminal)) / Shares
+    #    """
+    #    dcf_stream = self.dcf_model_multiyear(ufcf_series, years=years)
+        
+    #    total_value = float(np.sum(dcf_stream))
+
+        # ดึง shares แบบปลอดภัย + รองรับ key หลายแบบ
+    #    shares = (
+    #        self.income.get("Weighted Average Shares")
+    #        or self.income.get("Weighted Average Shares Outstanding")
+    #        or self.income.get("WeightedAverageSharesOutstanding")
+    #    )
+
+    #    try:
+    #        shares = float(shares)
+    #    except Exception:
+    #        shares = 1.0
+
+    #    if shares <= 0:
+    #        shares = 1.0
+
+    #    return round(total_value / shares, 2)
     
     # ================= Efficiency ================= #
 

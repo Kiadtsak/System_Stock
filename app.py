@@ -114,7 +114,7 @@ def raw_financials(symbol: str) -> Dict[str, Any]:
         "basic_info": basic,
     }
 
-@app.post("/api/ai-analysis")
+#@app.post("/api/ai-analysis")
 def ai_analysis(payload: Dict[str, Any]):
     start = time.time()
     logger.info("🧠 AI analysis requested")
