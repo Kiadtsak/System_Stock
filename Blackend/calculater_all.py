@@ -37,7 +37,7 @@ def calculate_ratios_by_year(income_data, balance_data, cashflow_data, basic_inf
                 "Unlevered Free Cash Flow (UFCF)": model.unlevered_free_cash_flow(),
                 "Operating Cash Flow (OCF)": model.Operating_Cash_Flow(),
                 "Free Cash Flow (FCF)": model.Free_Cash_Flow(),
-                "Intrinsic Value Per Share": model.intrinsic_value_per_share(),
+                #"Intrinsic Value Per Share": model.intrinsic_value_per_share(),
                 #"Intrinsic Value Per Share": model.intrinsic_value_per_share(), 
                 #"DCF Valuetion": model.dcf_model_multiyear(),
                 #"Operating Cash Flow (OCF) ": cash_flow.Operating_Cash_Flow(income, cashflow, year),
