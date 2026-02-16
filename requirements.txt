@@ -7,3 +7,4 @@ fastapi==0.116.2
 uvicorn==0.24.0
 PyYAML==6.0.3
 openai==1.98.0
+setuptools==70
