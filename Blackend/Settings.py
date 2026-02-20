@@ -68,19 +68,6 @@ USER_PROMPT_TEMPLATE = """
 
 
 
-""" 
-ธีมดำ streamlit 
-[theme]
-base="dark"
-primaryColor="#256eb"
-backgroundColor="#0b1220"
-secondaryBackgroundColor="#111827"
-textColor="#e5e7eb"
-font="sans serif
-
-"""
-
-
 SYSTEM_PROMPT = """
 คุณเป็นนักวิเคราะห์หุ้นระดับมืออาชีพ
 

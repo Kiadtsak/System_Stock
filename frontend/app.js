@@ -746,21 +746,20 @@ const state = {
     renderFinancialCharts(data);
     renderRatioSection(data);
   }
-  
+
   async function loadAIAnalysis(rows) {
     try {
       if (!rows || !rows.length) throw new Error("rows ว่าง");
-  
-      // ถ้า frontend เปิดด้วย Live Server 5500 ให้ใช้ URL เต็ม (กัน CORS/คนละ origin)
-      //const url = "http://127.0.0.1:8000/api/ai-analysis"; // หรือใช้ "/api/ai-analysis" ถ้าเสิร์ฟหน้าเว็บจาก FastAPI
+
       const url = "/api/ai-analysis";
       // ใส่ข้อความโหลด
       const setLoading = (id) => {
         const el = document.getElementById(id);
         if (el) el.innerText = "กำลังวิเคราะห์...";
       };
-      ["aiQuality","aiValuation","aiRisk","aiView"].forEach(setLoading);
-  
+      //["aiQuality","aiValuation","aiRisk","aiView"].forEach(setLoading);
+      ["aiView"].forEach(setLoading);
+      
       const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -774,38 +773,43 @@ const state = {
   
       const data = await res.json();
       const a = data?.analysis;
-  
+        
       // รองรับ 2 แบบ:
       // 1) a เป็น object {quality, valuation, risk, view}
       // 2) a เป็น {text: "..."} (กรณี GPT ส่งเป็นข้อความเดียว)
       if (a && typeof a === "object" && ("quality" in a || "valuation" in a || "risk" in a || "view" in a)) {
-        if (document.getElementById("aiQuality"))   document.getElementById("aiQuality").innerText   = a.quality ?? "—";
-        if (document.getElementById("aiValuation")) document.getElementById("aiValuation").innerText = a.valuation ?? "—";
-        if (document.getElementById("aiRisk"))      document.getElementById("aiRisk").innerText      = a.risk ?? "—";
-        if (document.getElementById("aiView"))      document.getElementById("aiView").innerHTML      = a.view ?? "—";
+        if (document.getElementById("aiView"))      document.getElementById("aiView").innerHTML = marked.parse(a.view ?? "-");    //a.view ?? "—";
         return;
       }
   
       if (a && typeof a === "object" && "text" in a) {
         // ถ้าได้ text เดียว เอาไปใส่ aiView และให้ช่องอื่นเป็น —
-        if (document.getElementById("aiView")) document.getElementById("aiView").innerHTML = a.text ?? "—";
-        if (document.getElementById("aiQuality"))   document.getElementById("aiQuality").innerText   = "—";
-        if (document.getElementById("aiValuation")) document.getElementById("aiValuation").innerText = "—";
-        if (document.getElementById("aiRisk"))      document.getElementById("aiRisk").innerText      = "—";
+        if (document.getElementById("aiView")) document.getElementById("aiView").innerHTML = marked.parse(a.text ?? "-");   //a.text ?? "—";
         return;
       }
-  
+      
       throw new Error("รูปแบบ response ไม่ถูกต้อง (analysis ไม่มีข้อมูลที่คาดไว้)");
   
     } catch (err) {
       console.error("AI ERROR:", err);
-      if (document.getElementById("aiQuality"))   document.getElementById("aiQuality").innerText   = "❌ AI ใช้งานไม่ได้";
-      if (document.getElementById("aiValuation")) document.getElementById("aiValuation").innerText = "❌ AI ใช้งานไม่ได้";
-      if (document.getElementById("aiRisk"))      document.getElementById("aiRisk").innerText      = "❌ AI ใช้งานไม่ได้";
-      if (document.getElementById("aiView"))      document.getElementById("aiView").innerHTML      = "❌ AI ใช้งานไม่ได้";
+      if (document.getElementById("aiView")) document.getElementById("aiView").innerHTML = "❌ AI ใช้งานไม่ได้";
     }
-  }
+    /*
+    if (a && typeof a === "object" && ("quality" in a || "valuation" in a || "risk" in a || "view" in a)) {
+      if (document.getElementById("aiView"))
+        document.getElementById("aiView").innerHTML = marked.parse(a.view ?? "—");
+      return;
+    }
+    
+    if (a && typeof a === "object" && "text" in a) {
+      if (document.getElementById("aiView"))
+        document.getElementById("aiView").innerHTML = marked.parse(a.text ?? "—");
+      return;
+    }
+    */
+  }  
 
+  
   function buildKVCard(title, obj) {
     const card = document.createElement("div");
     card.className = "card";

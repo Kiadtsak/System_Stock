@@ -5,8 +5,9 @@ from pathlib import Path
 from typing import Dict, Any
 import time
 import logging
+import re
 
-from fastapi import FastAPI, APIRouter,  HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -26,7 +27,6 @@ app = FastAPI(title="Financials API", version="1.0")
 
 logger = logging.getLogger("AI")
 logging.basicConfig(level=logging.INFO)
-
 
 app.add_middleware(
     CORSMiddleware,
@@ -113,12 +113,124 @@ def raw_financials(symbol: str) -> Dict[str, Any]:
         "cash_flow_statement": cashflow,
         "basic_info": basic,
     }
+import json
+import re
+import time
+from typing import Any, Dict
+
+from fastapi import HTTPException
+
+
+def _extract_text_from_analysis(analysis: Any) -> str:
+    """
+    Accepts str/dict/list/other; returns the best-effort text content.
+    """
+    if analysis is None:
+        return ""
+
+    if isinstance(analysis, str):
+        s = analysis.strip()
+        # If it's JSON string, parse it
+        if (s.startswith("{") and s.endswith("}")) or (s.startswith("[") and s.endswith("]")):
+            try:
+                analysis = json.loads(s)
+            except json.JSONDecodeError:
+                return s
+        else:
+            return s
+
+    if isinstance(analysis, dict):
+        # common pattern: {"ผลการวิเคราะห์": "..."} or {"text": "..."}
+        for k in ("ผลการวิเคราะห์", "text", "analysis", "content"):
+            v = analysis.get(k)
+            if isinstance(v, str) and v.strip():
+                return v
+        # fallback: stringify dict
+        return json.dumps(analysis, ensure_ascii=False)
+
+    if isinstance(analysis, list):
+        return json.dumps(analysis, ensure_ascii=False)
+
+    return str(analysis)
+
+
+def _format_to_bullets(text: str) -> str:
+    """
+    Turns the AI text into readable numbered sections + bullet points (Markdown).
+    """
+    if not text:
+        return ""
+
+    # Convert escaped newlines if the text contains literal "\n"
+    text = text.replace("\\n", "\n").replace("\r\n", "\n").replace("\r", "\n").strip()
+    text = re.sub(r"\n{3,}", "\n\n", text)
+
+    lines = [ln.strip() for ln in text.split("\n")]
+    lines = [ln for ln in lines if ln]  # drop empty
+
+    # Normalize bullets to "-"
+    norm = []
+    for ln in lines:
+        ln = re.sub(r"^\s*[•●▪]+\s*", "- ", ln)
+        ln = re.sub(r"^\s*-\s*", "- ", ln)
+        norm.append(ln)
+
+    # Group by headings like "### 1) ...."
+    sections: list[tuple[str, list[str]]] = []
+    current_title = "ผลการวิเคราะห์"
+    current_items: list[str] = []
+
+    heading_re = re.compile(r"^#{2,6}\s*(.+)$")
+    numbered_heading_re = re.compile(r"^(?:#{0,6}\s*)?(\d+)\)\s*(.+)$")
+
+    def flush():
+        nonlocal current_title, current_items
+        if current_items:
+            sections.append((current_title, current_items))
+        current_items = []
+
+    for ln in norm:
+        m1 = heading_re.match(ln)
+        if m1:
+            flush()
+            title = m1.group(1).strip()
+            # strip leading numbering inside heading if present
+            mnum = numbered_heading_re.match(title)
+            if mnum:
+                title = f"{mnum.group(1)}) {mnum.group(2).strip()}"
+            current_title = title
+            continue
+
+        # If line starts with "1) ...." without ###, treat as new section too
+        m2 = numbered_heading_re.match(ln)
+        if m2 and not ln.startswith("- "):
+            flush()
+            current_title = f"{m2.group(1)}) {m2.group(2).strip()}"
+            continue
+
+        # Make non-bullet lines into bullets (so it won't be one long paragraph)
+        if not ln.startswith("- "):
+            ln = f"- {ln}"
+        current_items.append(ln)
+
+    flush()
+
+    # Render markdown: headings + bullets
+    out: list[str] = []
+    for title, items in sections:
+        out.append(f"### {title}")
+        out.extend(items)
+        out.append("")  # spacing
+
+    return "\n".join(out).strip()
+
+from Blackend.AI.ai_prompt import SYSTEM_PROMPT, USER_PROMPT_TEMPLATE
 
 @app.post("/api/ai-analysis")
 def ai_analysis(payload: Dict[str, Any]):
     start = time.time()
     logger.info("🧠 AI analysis requested")
-    
+
     # ---------- 1) Validate payload ----------
     if not isinstance(payload, dict):
         raise HTTPException(status_code=400, detail="Payload must be JSON object")
@@ -127,47 +239,54 @@ def ai_analysis(payload: Dict[str, Any]):
     if not isinstance(result, list) or not result:
         raise HTTPException(
             status_code=400,
-            detail="Payload must contain non-empty 'result' list"
+            detail="Payload must contain non-empty 'result' list",
         )
-    # ---------- 2) Load base data ---------- 
+
+    # ---------- 2) Load base data ----------
     try:
         engine = GPTAnalysisEngine()
-
         analysis = engine.analyze_from_files(
             result=result,
-           #valuation_obj=result,
-            use_latest_only=True
+            use_latest_only=True,
         )
-
     except Exception as e:
         logger.error("🔥 AI ENGINE FAILED")
-        #logger.error(traceback.format_exc())
-
         raise HTTPException(
             status_code=500,
             detail={
                 "message": "AI analysis failed",
                 "error": str(e),
-                "type": type(e).__name__
-            }
+                "type": type(e).__name__,
+            },
         )
 
     # ---------- 4) Done ----------
     elapsed = round(time.time() - start, 2)
     logger.info(f"✅ AI analysis completed in {elapsed}s")
-   
-    if not isinstance(analysis, str):
-        analysis = str(analysis)
+
+    # ---------- 5) Beautify into bullet list, return as str ----------
+    analysis = _extract_text_from_analysis(analysis)
+    analysis = _format_to_bullets(analysis)
+       
+    #print("===== SYSTEM PROMPT =====")
+    #print(SYSTEM_PROMPT)
+
+    #print("===== USER PROMPT =====")
+    #print(USER_PROMPT_TEMPLATE)
 
     return {
         "status": "success",
         "elapsed_seconds": elapsed,
-        "analysis":{                        
-            "text": str(analysis)
-        }
+        "analysis": {
+            "text": analysis,  # ✅ เป็น str และแยกเป็นข้อแล้ว
+        },
     }
+
+
+
+
 
 # เสิร์ฟ frontend เหมือนเดิม
 FE_DIR = ROOT / "frontend"
 if FE_DIR.exists():
-    app.mount("/", StaticFiles(directory=str(FE_DIR), html=True), name="frontend")
+   app.mount("/", StaticFiles(directory=str(FE_DIR), html=True), name="frontend")
