@@ -247,7 +247,7 @@ def ai_analysis(payload: Dict[str, Any]):
         engine = GPTAnalysisEngine()
         analysis = engine.analyze_from_files(
             result=result,
-            use_latest_only=True,
+            use_latest_only=False,
         )
     except Exception as e:
         logger.error("🔥 AI ENGINE FAILED")
@@ -268,12 +268,7 @@ def ai_analysis(payload: Dict[str, Any]):
     analysis = _extract_text_from_analysis(analysis)
     analysis = _format_to_bullets(analysis)
        
-    #print("===== SYSTEM PROMPT =====")
-    #print(SYSTEM_PROMPT)
-
-    #print("===== USER PROMPT =====")
-    #print(USER_PROMPT_TEMPLATE)
-
+   
     return {
         "status": "success",
         "elapsed_seconds": elapsed,

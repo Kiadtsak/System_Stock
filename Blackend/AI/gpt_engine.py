@@ -29,8 +29,8 @@ class GPTAnalysisEngine:
                 "Error": "No result data provided."
             }
 
-        ratios_for_ai = result[-1] if use_latest_only else result
-
+        #ratios_for_ai = result[-1] if use_latest_only else result
+        ratios_for_ai = result
         prompt = USER_PROMPT_TEMPLATE.format(
             ratios=json.dumps(ratios_for_ai, ensure_ascii=False),
             valuation=json.dumps(valuation_obj or {}, ensure_ascii=False),
